@@ -5,6 +5,6 @@ services:
     ports:
       - "7222:7222"
     volumes:
-      - "./data:/shared:rw"
+      - "./ems:/shared:rw"
 networks:
   webnet:
