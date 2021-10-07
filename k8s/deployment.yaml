@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tibco-ems
+  labels:
+    type: localpv
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  claimRef:
+    name: tibco-ems-claim
+    namespace: jms
+  hostPath:
+    path: "/Users/eric/Workspaces/eric4hy/jms/tibco"    ## create a local folder then point "path" to that folder
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tibco-ems-claim
+  namespace: jms
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tibco-ems
+  namespace: jms
+  labels:
+    app: tibco
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tibco
+  template:
+    metadata:
+      labels:
+        app: tibco
+    spec:
+      volumes:
+      - name: tibco-config
+        persistentVolumeClaim:
+          claimName: tibco-ems-claim
+      containers:
+      - name: tibco
+        image: erichaiyang/tibco-ems-ce
+        volumeMounts:
+        - mountPath: "/shared"
+          name: tibco-config
+        ports:
+        - containerPort: 7222
+---
+kind: Service 
+apiVersion: v1 
+metadata:
+  name: tibco-ems-service 
+spec:
+  # Expose the service on a static port on each node
+  # so that we can access the service from outside the cluster 
+  type: LoadBalancer
+
+  # When the node receives a request on the static port (30163)
+  # "select pods with the label 'app' set to 'echo-hostname'"
+  # and forward the request to one of them
+  selector:
+    app: tibco
+
+  ports:
+    # Three types of ports for a service
+    # nodePort - a static port assigned on each the node
+    # port - port exposed internally in the cluster
+    # targetPort - the container port to send requests to
+    - port: 7222 
+      targetPort: 7222

@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  ems:
+    build: .
+    ports:
+      - "7222:7222"
+    volumes:
+      - "./data:/shared:rw"
+networks:
+  webnet:
