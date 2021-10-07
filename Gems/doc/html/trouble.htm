@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Troubleshooting</title>
+</head>
+
+<body>
+<h2>Troubleshooting</h2>
+<p>In general, if you experience any problems check the Gems command window for errors.</p>
+
+<h3>Gems fails to start</h3>
+<p>If Gems fails to start check the following:</p>
+
+<lu>
+<li>JRE 1.6.0 or higher is installed and the bin directory is in your path. To check this open a command prompt and type <em>java -version</em></li>
+<li>TIBCO EMS is installed</li>
+<li>If EMS is not installed in the standard tibco home directory set the %TIBEMS_ROOT% variable in the rungems.cmd file to the EMS installation directory</li>
+</lu>
+
+<h3>Gems fails to connect</h3>
+<p>If Gems fails to connect to an EMS server check the following:</p>
+
+<lu>
+<li>The supplied URL's hostname and TCP port are correct</li>
+<li>The supplied EMS user name and password is correct</li>
+<li>The supplied EMS user  has administrative rights</li>
+<li>There is network connectivity to the EMS server machine</li>
+</lu>
+
+<h3>"Not Permitted" Error when using Destination Monitors</h3>
+<p>If you have created a new administrator user for Gems and you also wish to use the Topic/Queue monitor or Request/Reply monitor,
+you must also grant this user subscribe permission to the <code>$sys.monitor</code> topics. See the Security Permissions section for details.</p>
+
+<h3>"Not Permitted" Error when starting Gems</h3>
+<p>If you have created a new administrator user for Gems and you also wish to use the Event Monitor feature
+you must also grant this user subscribe permission to the <code>$sys.monitor</code> topics that are configured in the EventMonitor section in the <code>servers.xml</code> file. See the Security Permissions section for details.</p>
+
+
+<h3>Gems display freezes</h3>
+<p>If the Gems display appears to be frozen, this may be because an EMS server is in recovery mode. </p>
+<p>When an EMS server activates, either as a result of a failover or on restart, 
+the server has to recover all pending messages that were saved to disk. In exceptional cases, 
+where there are a large number of pending messages, this may take a few moments. 
+During this time the server accepts connections but will not process any requests until the server has fully recovered.
+Wait for the server to recover, and Gems will continue normally.
+
+<h3>Cannot browse pending messages</h3>
+<p>Messages that have been sent to a client application and not yet acknowledged, or messages that have been sent to the EMS client library and held in a prefetch queue CANNOT be browsed. If this condition persists its possible that the client application has stalled and may need to be shutdown.</p>
+
+<hr>
+</body>
+</html>

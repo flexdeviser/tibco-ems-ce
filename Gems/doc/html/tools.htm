@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Testing Tools</title>
+  </head>
+
+  <body>
+  <h2> Testing Tools</h2>
+    <h3><a name="sendmsg"/>Sending a Message to a Queue or Topic</h3>
+    <p>A test message may easily be sent to any queue or topic. The following JMS message types are supported:</p>
+    <ul>
+      <li>TextMessage</li>
+      <li>MapMessage</li>
+    </ul>
+    <p>To send a message first select the queue or topic then select the send action, for the type of message you wish to send, from the Queues or Topics menu. Alternatively, right click on the queue or topic and select from the right mouse button pop-up menu.</p>
+    <p>Note; these options will not be available if ViewOnlyMode is enabled in the gems.props file.</p>
+    <p>Use the send message window to set the message header properties and text body for a TextMessage or fields for a MapMessage.</p>
+    <p>The following standard JMS header properties are automatically populated:</p>
+    <ul>
+      <li>JMSDeliveryMode - select PERSISTENT, NON_PERSISTENT or RELIABLE</li>
+      <li>JMSDestination - the queue or topic name to send the message to</li>
+      <li>JMSType - message type identifier (optional)</li>
+      <li>JMSCorrelationID - an identifier to link messages, such as a response message to a request message (optional).</li>
+      <li>JMSExpiration - Length of time that message will live before expiration in millisecs. If 0, message does not expire</li>
+      <li>JMSPriority - message priority from 0 to 9 (9 being the highest priority)</li>
+    </ul>
+    <p>The JMSDestination header property will automatically be set to the queue or topic that was selected, if there was no selection this will be blank, the destination name must be entered before the message can be sent.</p>
+    <p>Use the Properties menu or the pop-up right mouse button menu to add any additional message header properties.</p>
+    <p>Once the header properties and message body have been set press the Send button to send the message. Note; the display remains open so further messages may be sent.</p>
+
+
+    <h3><a name="sendmsgs"/>Sending Saved Messages to a Queue or Topic</h3>
+    <p>Many dialogs, such as the QueueBrowser, allow you to save messages to a file. These saved messages may be loaded and sent or published to any queue or topic. The following JMS message types are supported:</p>
+    <ul>
+      <li>TextMessage</li>
+      <li>MapMessage</li>
+    </ul>
+    <p>You can edit any message before sending by double-clicking on the message to open the message editor. You can also remove selected messages or add or insert new messages using the Message menu.</p>
+    <p>Note; Some fields, such as MessageID, Timestamp, MsgSize, will not show correct values until the message have been sent. To send the messages click the Start button.</p>
+
+    <h3><a name="reqreply"/>Service Request/Reply Tester</h3>
+<p>The Request/Reply Tester display may be used to send requests and receive replies to test any request/reply based service operation. To test service operations using queues open the display using the Queues menu, or for topics using the Topics menu.</p>
+<p>Configure the following information in the Tester display</p>
+    <ul>
+      <li>Request Queue/Topic Name - The destination to send the request messages to. Use the ... button to browse destinations.</li>
+      <li>Request Message - the type and content of the request message. Use the ... button to configure the message.</li>
+      <li>Mode - Synchronous (blocks on each send call), or Asynchronous (non-blocking).</li>
+      <li>Requests to Send - total number of requests to send.</li>
+      <li>Delay Between Sends - Length of time in millisecs to pause between sending  messages.</li>
+    </ul>
+<p>Note; temporary destinations are used automatically for receiving replies, for synchronous mode a new temporary is generated for every requests, for asynchronous mode a single temporary is used in conjunction with the JMSCorrelationID. <b>For asynchronous mode to work the receiving service MUST copy the JMSCorrelationID header property from the request to the response message.</b> For synchronous mode the timeout used to wait for a reply may be configured using the Options entry in the Edit menu.</p>
+<p>Click Start to run the test, as request messages are sent an entry representing that operation will be shown in the tester window. Once a reply is received the ResponseTime column is updated to indicate the time the service took to execute, to view a reply message double click on the row for the message. All messages may be logged to file using the File menu "Save Messages To File" option.</p>
+
+<p>If replies can be returned on $TMP$ destinations, set tmpQueueReplies and/or tmpTopicReplies to true in the ServiceMonitor element.
+Note: The monitor does not know in advance which $TMP$ destination a reply will be returned to,
+hence Gems will subscribe to the system monitor messages for ALL $TMP$ destinations so there may be performance implications to be considered.</p>
+
+<h3><a name="service"/>Service Request/Reply Monitoring</h3>
+    <p>It is possible to monitor messages used in service request/reply interactions and Gems will automatically correlate the reply with its request message. To open the monitor for queue messages select "Monitor Request/Reply Queue..." from the Queues menu, to monitor topic messages select "Monitor Request/Reply Topic..." from the Topics menu.</p>
+    <p>If a destination was selected the monitor will automatically use this as the request destination, if not use the "..." button to display the destination picker. Set the reply destination name, if replies are returned on temporary destinations use <code>$TMP$.&gt;</code>. Also set the number of request/reply operations to monitor.</p>
+
+    <p>To begin monitoring click the Start button, the display will show one line for each request/reply interaction. The display shows the following information for each:</p>
+    <ul>
+      <li>RequestMessageID - JMSMessageID for the request message.</li>
+      <li>Timestamp - the date and time the request message was sent by the client.</li>
+      <li>ResponseTime - the response time i.e. the time between the request its reply message in millisecs.</li>
+      <li>Destination - the destination request name.</li>
+      <li>CorrelationID - the JMSCorrelationID i.e. the identifier to link request to the reply message.</li>
+      <li>ReplyTo - the JMSReplyTo destination name for the reply message.</li>
+      <li>ReqMsgSize - the request message size, if the message is compressed this is the compressed size.</li>
+      <li>ReplyMsgSize - the reply message size, if the message is compressed this is the compressed size.</li>
+    </ul>
+    <p>The following options may be set using the options editor on the Edit menu:</p>
+    <ul>
+      <li>Message read delay - the delay between receiving messages in millisecs.</li>
+      <li>View oldest messages first - determines the order of messages displayed in the list.</li>
+      <li>Use server based timestamps - by default the monitor uses the messages JMSTimestamp set by the client application to calculate the response time, this can lead to spurious timings if the requesting and receiving clients clocks are not synchronised. If this is the case use this option to use timestamps set by the EMS server.</li>
+      <li>Request/reply timeout - the number of seconds to wait for a reply to each request message.</li>
+    </ul>
+    <p>To display further information about a request or reply message open the message display by using the Message menu or right mouse button pop-up menu.</p>
+    <p>All received messages can be saved to a file using the "Save Messages to File..." option in the File menu.</p>
+    <p><b style="color:red;">Note; monitoring destinations under high load can cause message backlogs in the EMS server, the monitor will automatically stop if the message backlog exceeds the configuration property MaxMonitorBacklog (default 1000). MaxMonitorBacklog may be set in the gems.props file.</b></p>
+
+  <hr>
+  </body>
+</html>

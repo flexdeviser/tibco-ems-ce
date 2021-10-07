@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Introduction</title>
+  </head>
+
+  <body>
+  <h2><a name="intro"/> Introduction</h2>
+    <p>
+        Gems is a graphical user interface utility for TIBCO&#174 Enterprise Message Service 
+        (EMS). It can be used by JMS developers as a general purpose testing tool and by 
+        administrative support staff as a management and monitoring tool.</p>
+    </a>
+  <p>
+      Gems provides the following main features:   <ul>
+        <li>Server Monitoring. Server state and main statistics are automticaly updated, 
+            warning and error limits may be configured. Server generated events are also 
+            captured.</li>
+        <li>Server Management. Including, general server configuration, JMS destinations, 
+            JNDI factories, users/groups, permissions, bridges, routes etc.</li>
+        <li>JMS support. Messages may be sent/received, queues may be browsed and message 
+            contents inspected. Selectors and filters may be specified.</li>
+        <li>JMS Message Monitoring. Messages may be monitored (snooped) as they pass through 
+            the server. Request and reply messages can be correlated to provide service 
+            response times.</li>
+        <li>JMS Message Management. Eg; purging messages, copy messages from a queue to 
+            another queue on a different server.</li>
+        <li>Charting. Server statistics may be charted in real time, data may be saved to 
+            CSV files for export to other tools such as Excel.</li>
+        <li>Logging. Server statistics may be logged automatically when warning or error 
+            limits are breached.</li>
+        <li>Security. SSL connectivity, view only mode.</li>
+        <li>Customisable display and look and feel.</li>
+        <li>Support for Managing and Monitoring TIBCO SubStation.</li>
+        <li>Support for Monitoring TIBCO EMS Appliance.</li>
+        <li>Support for Migrating to TIBCO EMS Appliance.</li>
+  </ul>
+<h2>&nbsp;</h2>
+<h2><a name="requirements"/>Requirements</h2>
+    <p>
+        Gems is written in Java and compiled using jdk1.6. Thus a Java run-time environment is needed and this should be at least version 1.6 or greater. 
+        To use the example executable rungems.cmd the Java JRE bin directory must be in 
+        the system path.</p>
+  <p>Gems supports TIBCO EMS version 5.0 or later. In order to run 
+      Gems the TIBCO EMS client jar files must be installed and&nbsp; included on the CLASSPATH.</p>
+  <p>Note: To use Gems with TIBCO EMS version 8.0 client or later requires JRE 1.7</p>
+    <p>To use the charting features the JFreeChart libraries jcommon-1.0.23.jar and jfreechart-1.0.19.jar must be downloaded from <a href="http://www.jfree.org/jfreechart">http://www.jfree.org/jfreechart</p>
+    </a>
+<h2>&nbsp;</h2>
+<h2><a name="install"/>Installation</h2>
+    <p>The Gems installation is distributed as a standard ZIP file.</a></p>
+    <p>Installation of  Gems is a simple a matter of unzipping <code>Gems&lt;version&gt;.zip</code> file to a local directory. This 
+        ZIP file includes all classes required to run Gems, except for the EMS client 
+        and JFreeChart JAR files.</p>
+    <p>Copy JFreeChart libraries jcommon-1.0.23.jar and jfreechart-1.0.19.jar to the Gems lib folder.</p>
+    <p>An example executable rungems.cmd is provided for running Gems. If necessary edit the CMD file to set the correct path to the EMS installation directory.</p>
+    <p>See <a href="gettingstarted.htm#running" target="_self">Running Gems</a> for more details.</p>
+    <hr>
+<!-- hhmts end -->
+  </body>
+</html>

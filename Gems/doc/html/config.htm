@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Configuration Properties</title>
+  </head>
+
+  <body>
+     <h1><a name="config"/>Configuration Properties </h1>
+  <p> On startup Gems reads display configuration properties from the <code>gems.props</code> file.
+The list of available properties are shown in the table below:
+</p><br/>
+    <br />
+  <table width="850" border="1">
+    <tr>
+      <td width="200"><strong> Property</strong></td>
+      <td><strong>Description</strong></td>
+    </tr>
+    <tr>
+      <td>ServerConfigFile</td>
+      <td>Name of the server connections configuration file. Default&nbsp;<code>servers.xml</code><br>Since V5.2 this setting can be overridden on the command line.</code></td>
+    </tr>
+    <tr>
+      <td>LookAndFeel</td>
+      <td>Set UIManager Look and Feel class name (default: &nbsp;<code>javax.swing.plaf.metal.MetalLookAndFeel</code>)<br />
+      JGoodies L&F library is shipped with Gems in the lib directoy.
+      JGoodies theme may be customized on command line, see rungems.cmd
+      Available JGoodies look and feel classes:
+     <code>com.jgoodies.looks.plastic.Plastic3DLookAndFeel</code>
+     <code>com.jgoodies.looks.plastic.PlasticLookAndFeel</code>
+     <code>com.jgoodies.looks.windows.WindowsLookAndFeel</code>
+
+       </td>
+    </tr>
+    <tr>
+      <td>ViewOnlyMode</td>
+      <td>Allow view operations only, default = true if property removed or no property file specified</td>
+    </tr>
+    <tr>
+      <td>AllowMsgReadInViewOnlyMode</td>
+      <td>Allow message read operations, such as browse queue, subscribe to topic and browse durable in view only mode</td>
+    </tr>
+    <tr>
+      <td>DisplayRefresh</td>
+      <td>Display auto refresh in seconds (also determines data collection frequency for 
+          charting).
+          <br />
+          Set to 0 to disable (note this will also disable auto-reconnections and 
+          charting)</td>
+    </tr>
+    <tr>
+      <td>DisplayWidth</td>
+      <td>Main display width</td>
+    </tr>
+    <tr>
+      <td>DisplayHeight</td>
+      <td>Main display height</td>
+    </tr>
+    <tr>
+      <td>QueueNamePattern</td>
+      <td>Only show queues that match given pattern. The pattern may contain the wildcards 
+          &quot;*&quot; and &quot;&gt;&quot;</td>
+    </tr>
+    <tr>
+      <td>TopicNamePattern</td>
+      <td>Only show topics that match given pattern. The pattern may contain the wildcards 
+          &quot;*&quot; and &quot;&gt;&quot;</td>
+    </tr>
+    <tr>
+      <td>UserNameFilter</td>
+      <td>Only show connections, consumers etc for given user name</td>
+    </tr>
+    <tr>
+      <td>PermType</td>
+      <td>Only show destinations with permanence type (EMS4.4 or higher); 4=All,3=No 
+          Tempories,2=Dynamic,1=Static</td>
+    </tr>
+    <tr>
+      <td>HideViews</td>
+      <td>Comma separated list of views to hide 
+          (ACLs, Bridges, Channels, Clients, Connections, Consumers, Durables, Factories, Groups, Producers, Queues, Routes, Stores, Topics, Transactions, Transports, Users)</td>
+    </tr>
+    <tr>
+      <td>ShowTotals</td>
+      <td>Show Totals on server monitor display</td>
+    </tr>
+    <tr>
+      <td>ShowPathInTitleBar</td>
+      <td>Show the selection path in the title bar. Useful if you have many EMS servers to 
+          indicate which server is currently selected.</td>
+    </tr>
+    <tr>
+      <td>ShowRootInTitleBar</td>
+      <td>When ShowPathInTitleBar is true determines if root node is displayed or not.</td>
+    </tr>
+    <tr>
+      <td>ShowExtendedProperties</td>
+      <td>Show extended message properties; JMSExpiration, JMSPriority</td>
+    </tr>
+    <tr>
+      <td>ColourPendingMsgs</td>
+      <td>Highlight when there are pending messages for topics, queues and durables</td>
+    </tr>
+    <tr>
+      <td>MsgReadDelay</td>
+      <td>Message browser read delay in milliseconds</td>
+    </tr>
+    <tr>
+      <td>ViewOldMessagesFirst</td>
+      <td>Message view order</td>
+    </tr>
+    <tr>
+      <td>MaxDisplayBytes</td>
+      <td>Maximum display size for bytes messages</td>
+    </tr>
+    <tr>
+      <td>ConnectTimeout</td>
+      <td>Sets the TCP connect timeout in milliseconds. If you are connecting to a remote 
+          EMS server you may need to increase this.</td>
+    </tr>
+    <tr>
+      <td>AdminTimeout</td>
+      <td>Admin command timeout in milliseconds. If you are connecting to a remote EMS 
+          server you may need to increase this</td>
+    </tr>
+    <tr>
+      <td>AllowStandbyOperations</td>
+      <td>Allow admin operations to standby server.</td>
+    </tr>
+    <tr>
+      <td>SSTimeout</td>
+      <td>Sets the SubStation request timeout in milliseconds</td>
+    </tr>
+    <tr>
+      <td>UseServerTimestamps</td>
+      <td>Sets default for use of sever timestamps for calculating response time in 
+          Request/reply monitor. When false timestamps from original messages are used ie 
+          timestamps as set by sending clients. When true timestamps from monitor messages 
+          are used ie timestamps set by the EMS server.</td>
+    <tr>
+      <td>DetailPanelColWidths</td>
+      <td>Comma separated list of column widths on details panel (eg: 
+          TopicName:200, QueueName:250)</td>
+    </tr>
+    <tr>
+      <td>LogDateTimeFormat</td>
+      <td>DateTime format used for timestamp in server info logs (default: EEE MMM dd HH:mm:ss SSS zzz yyyy)</td>
+    </tr>
+    <tr>
+      <td>CSVFileDelimiter</td>
+      <td>Delimiter used as separator between values in CSV file output</td>
+    </tr>
+    <tr>
+      <td>MaxQueues, MaxTopics</td>
+       <td>Constantly retrieving 1000's of queues/topics can be slow. Test carefully before increasing changing these values.
+	Alternatively use QueueNamePattern/TopicNamePattern to reduce the number of destinations being monitored.
+	Disables the main queues/topics display when the EMS server reports more than this many queues/topics</td>
+    </tr>
+    <tr>
+      <td>MaxConsumers, MaxProducers</td>
+       <td>Constantly retrieving 1000's of consumers/producers can be slow.
+	Disables the main consumers/producers display when the EMS server reports more than this many consumers/producers</td>
+    </tr>
+    <tr>
+      <td>ServerInfoColPositions</td>
+      <td>Columns positions for server info display (eg AsyncDBSize:5,SyncDBSize:6)
+	    Note; columns are moved to the specified position index, when specifying multiple columns previous columns may be moved from positions specified.
+	    You cannot move the Alias column.</td>
+    </tr>
+    <tr>
+      <td>DisableAutoConnectAfterTimeoutException</td>
+      <td>Use to prevent auto reconnect after admin timeouts due to unresponsive EMS server.</td>
+    </tr>
+    <tr>
+      <td>AutoReconnectToPrimary</td>
+      <td>When an FT URL is used and the 1st server in the URL is in standby mode, will attempt to auto reconnect to primary by swapping server names in the FT URL.</td>
+    </tr>
+    <tr>
+      <td>MaxMonitorBacklog</td>
+      <td>Automatically stop destination monitors when max message backlog limit is reached.</td>
+    </tr>
+    <tr>
+      <td>DestCursorSize</td>
+      <td>Cursor size for getTopics/getQueues queries. Retrieving a large number of Topics/Queues is done with several cursored calls, this defines max count of destinations to return for each call.</td>
+    </tr>
+    <tr>
+      <td>AppliancePollPeriod</td>
+      <td>For EMS Appliance monitoring sets the poll period in seconds for monitoring appliance FT state (EMSA V2.0 only)</td>
+    </tr>
+    <tr>
+      <td>ApplianceSshTimeout</td>
+      <td>For EMS Appliance monitoring sets the SSH connect timeout in seconds for monitoring appliance FT state (EMSA V2.0 only)</td>
+    </tr>
+    <tr>
+      <td>ShowApplFullyOp</td>
+      <td>For EMS Appliance V2.1 and higher shows state as FULLY_OPERATIONAL instead of REPLICATING</td>
+    </tr>
+    <tr>
+      <td>AutoConnectOnStart</td>
+      <td>When false delays the auto connect until after the main display is shown</td>
+    </tr>
+    <tr>
+      <td>HideTreeDests</td>
+      <td>When true hides queues and topics lists from tree view</td>
+    </tr>
+    <tr>
+      <td>MaxMonitorEvents</td>
+      <td>Maximum number of events for destination monitors and queue browsers</td>
+    </tr>
+
+  </table>
+  <hr />
+  
+  </body>
+</html>

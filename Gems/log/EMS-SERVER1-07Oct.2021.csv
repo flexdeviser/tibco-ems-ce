@@ -1,0 +1,8 @@
+timestamp,consumerCount,producerCount,topicCount,queueCount,largeDestCount,pendingMessageCount,connectionCount,sessionCount,durableCount,pendingMessageSize,msgMem,inboundMessageCount,inboundMessageRate,outboundMessageCount,outboundMessageRate,diskReadRate,diskWriteRate,asyncDBSize,syncDBSize,routeRecoverCount,clientConnectionCount,adminConnectionCount,inboundBytesRate,outboundBytesRate,msgMemPooled,diskReadOperationsRate,diskWriteOperationsRate,RespTime
+Thu. Oct. 07 21:04:15 807 AEDT 2021,1,1,0,5,-1,0,1,1,0,0,13383,4,0,3,0,0,0,3072,2048,0,0,1,0,0,53248,0,0,2
+timestamp,routeRecoverCount,clientConnectionCount,adminConnectionCount,inboundBytesRate,outboundBytesRate,msgMemPooled,diskReadOperationsRate,diskWriteOperationsRate,consumerCount,producerCount,topicCount,queueCount,largeDestCount,pendingMessageCount,connectionCount,sessionCount,durableCount,pendingMessageSize,msgMem,inboundMessageCount,inboundMessageRate,outboundMessageCount,outboundMessageRate,diskReadRate,diskWriteRate,asyncDBSize,syncDBSize,RespTime
+Thu. Oct. 07 21:16:54 557 AEDT 2021,0,0,1,0,0,53248,0,0,1,1,0,5,-1,0,1,1,0,0,13383,4,0,3,0,0,0,2560,1536,1
+Thu. Oct. 07 21:17:24 574 AEDT 2021,0,1,1,784,1528,53248,0,0,3,1,2,5,-1,0,2,2,0,0,22144,15,4,14,4,0,0,3072,2048,3
+Thu. Oct. 07 21:17:54 584 AEDT 2021,0,1,1,0,0,53248,0,0,3,1,2,5,-1,0,2,2,0,0,22144,27,0,26,0,0,0,3072,2048,1
+Thu. Oct. 07 21:18:24 592 AEDT 2021,0,1,1,0,0,53248,0,0,3,1,2,5,-1,0,2,2,0,0,22144,33,0,32,0,0,0,3072,2048,3
+Thu. Oct. 07 21:18:54 601 AEDT 2021,0,1,1,0,0,53248,0,0,3,1,2,6,-1,0,2,2,0,0,22637,40,0,39,0,0,0,3072,2048,3

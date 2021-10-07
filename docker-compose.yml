@@ -6,5 +6,3 @@ services:
       - "7222:7222"
     volumes:
       - "./ems:/shared:rw"
-networks:
-  webnet:

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Monitoring Fault Tolerant Servers</title>
+  </head>
+
+  <body>
+  <h2><a name="ft"/> Monitoring Fault Tolerant Servers </h2>
+
+<p>A pair of Fault tolerant EMS servers may be monitored independently as separate EMS Servers (E.g. by adding two ConnectionNodes in the servers.xml file, one for the primary server and and for the secondary).
+Alternatively, a single EMS server entry can be used to represent the fault tolerant pair, note the following:</p>
+<ul>
+    <li>A fault tolerant URL must be specified with the two server addresses separated with a ','. Ensure that the server that should be the primary is specified first in the list.</li>
+    <li>If the Server Monitor display shows a state of Standby this means that the server that should be the primary (ie the first in the list) is currently in Standby. This is because an EMS server in standby mode allows admin connections.</li>
+    <li>You may set the AutoReconnectToPrimary configuration property in the gems.props file Gems will then attempt to automtically reconnect to the primary by swapping server names in the FT URL.</li>
+
+</ul>
+
+<p>Note: Monitoring Fault Tolerance on the EMS Appliance is slightly different than for EMS software, see next section.</p>
+
+<p>The state of the EMS server is displayed in the State column on the main EMS server display, the following values can be displayed:<p/>
+
+<ul>
+    <li><b style="background-color:green;">Active</b>&nbsp; This is shown to indicate the EMS server is running and actively processing clients.</li>
+    <li><b style="background-color:yellow;">Standby</b>&nbsp; This is shown to indicate the EMS server is standing by and <b>not</b> processing clients.</li>
+    <li><b style="background-color:red;">Unknown</b>&nbsp; This is shown to indicate there is a problem connecting to the EMS server, consult the command window for error information.</li>
+</ul>
+
+
+<p>The fault tolerant state of the primary EMS server is displayed in the FaultTolerantState column on the main EMS server display, the following values can be displayed:<p/>
+
+<ul>
+    <li><b style="background-color:green;">FULLY_OPERATIONAL</b>&nbsp; This is shown in normal operation for the primary EMS server when the secondary is connected to the primary and standing by for failover.</li>
+    <li><b style="background-color:orange;">STANDALONE</b>&nbsp; This is shown for the primary EMS server when there is no fault tolerance, e.g. the secondary is down or <b>not</b> connected to the primary.</li>
+</ul>
+
+    <p>If no FaultTolerantState is shown then the EMS servers are not configured for FT or the EMS server is in the Standby state</p>
+
+    <p>The image below shows two EMS servers. EMS-SERVER1 is Active and in a FULLY_OPERATIONAL fault tolerant state, I.e. it is the primary server in a fault tolerant pair and the secondary is standing by in the case if failure. EMS-SERVER2 shows a different active EMS server from another fault tolerant pair however this server is in STANDALONE mode, I.e. there is no standby running, this would normally be considered an error state as one of the EMS servers may have failed leaving just a single server operational.</p>
+      
+       	<p><img src="../images/ft.jpg" alt="FT Display"  /><br>
+
+  <hr>
+
+  </body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Setting Up Security</title>
+  </head>
+
+  <body>
+     <h2><a name="security"/>Setting Up Security</h2>
+     <h3><a name="perms"/>Permissioning</h3>
+  <p>Gems requires that the user supplied in the EMS connection information has administrator permissions.</p>
+  <p>Administrators are a special class of users that can manage the EMS server. Administrators can create, 
+  modify, and delete users, destinations, routes, factories, and other items. In general, administrators should 
+  be granted permission to perform administration activities, this can be achieved using the "Set Administrator Permissions" Dialog accessible via the Users menu, or by using the administration command line tool (tibemsadmin).</p>
+  <p>There is a special, predefined user named <code>admin</code> that can perform any administrative action. You cannot grant or 
+  revoke any permissions to <code>admin</code>. This user is created when the server is installed, and it is good practise to 
+  change the password for the <code>admin</code> user after installation.</p>
+  
+  <p>There is also a special group named <code>$admin </code>for system administrator users. When a user becomes a 
+  member of this group, that user receives the same permissions as the <code>admin</code> user. You cannot grant or revoke 
+  administrator permissions from any user that is a member of the <code>$admin</code> group. You should only assign the overall 
+  system administrator(s) to the <code>$admin</code> group. </p>
+  <p>In general, all Gems users should not be given the admin password since this allow access to potentially harmful operations. 
+  A new user name(or user names) should be created and granted selected administrative permissions.</p>
+  <p>A list of administrative permissions of particular relevance to Gems users is shown in the table below. (Refer to the EMS Users Guide for a complete list.)</p>  
+  <p>To set a user's administrator permissions in Gems select "Set Admin Permissions..." from the Users menu.</p><br />
+  <table width="800" border="0">
+    <tr>
+      <td width="300"><strong>Permission</strong></td>
+      <td><strong>Allows Users To</strong></td>
+    </tr>
+    <tr>
+      <td width="300">all</td>
+      <td>Perform all administrative commands.</td>
+    </tr>
+    <tr>
+      <td width="300">change-connection </td>
+      <td>Delete connections. </td>
+    </tr>
+    <tr>
+      <td width="300">create-destination </td>
+      <td>Create any destination. </td>
+    </tr>
+    <tr>
+      <td width="300">modify-destination </td>
+      <td>Modify any destination. </td>
+    </tr>
+    <tr>
+      <td width="300">delete-destination </td>
+      <td>Delete any destination. </td>
+    </tr>
+    <tr>
+      <td width="300">change-durable </td>
+      <td>Modify server parameters.  </td>
+    </tr>
+     <tr>
+      <td width="300">change-user  </td>
+      <td>Create, delete, and modify users.  </td>
+    </tr>
+    <tr>
+      <td width="300">purge-destination  </td>
+      <td>Purge destinations. </td>
+    </tr>
+    <tr>
+      <td width="300">purge-durable  </td>
+      <td>Purge durable subscribers. </td>
+    </tr>
+    <tr>
+      <td width="300">view-all  </td>
+      <td>View any item that can be administered (for example, users, groups, topics, and so on). </td>
+    </tr>     </table>
+    
+    <p>Note: If you have created a new user name and assigned administrator permissions and you wish to use the destination monitoring features.
+    You must also assign this user subscribe permission on the <code>$sys.monitor</code> 
+        topics. You can do this in Gems by using the "Set Topic Permissions" editor 
+        available in the Topics menu, 
+    or alternatively by editing the <code>acl.conf</code> file. For example, to allow monitoring of all queues that begin with <code>foo.bar</code> for user <code>GEMSUSR</code> add the following:</p> 
+    <p style="margin-left: 40px">
+    <code>TOPIC=$sys.monitor.Q.*.foo.bar.> USER=GEMSUSR PERM=subscribe</code>
+    </p>
+    <p>To use the request reply monitor feature when replies are returned on temporary destinations you also need to grant subscribe permission to $TMP$'s, for example:</p>
+     <p style="margin-left: 40px">
+     <code>TOPIC=$sys.monitor.Q.*.$TMP$.> USER=GEMSUSR PERM=subscribe</code>
+    </p>
+
+    <p>For the same reason, if you wish to use the Event Monitor feature you must also assign this user subscribe permission to the <code>$sys.monitor</code> 
+        topics configured in the EventMonitor section in the <code>servers.xml</code> file. For example:
+
+    <p style="margin-left: 40px">
+    <code>TOPIC=$sys.monitor.limits.*. USER=GEMSUSR PERM=subscribe</code><br/>
+    <code>TOPIC=$sys.monitor.server.warning USER=GEMSUSR PERM=subscribe</code>
+    </p>
+
+        <h3><a name="viewonly"/>View Only Mode</h3>
+    <p>For user&#39;s who require view only access the ViewOnlyMode property in the 
+        gems.props file may be set to true. When Gems runs in view only mode menu 
+        entries and dialogs pertaining to non-view only operations are removed.</p>
+    <p>Note; if the ViewOnlyMode property is removed from the properties file the default 
+        is for view only mode to be enabled.</p>
+         
+         <h3><a name="ssl"/>SSL</h3>
+
+    <p>Gems can be configured to use SSL to connect to any EMS server. Parameters may be set using the <code>SSLParam</code> element within the <code>ConnectionNode</code>
+    on the <code>servers.xml</code> file. Refer to <code>com.tibco.tibjms.TibjmsSSL</code> in the EMS documentation 
+    for all available SSL parameters. An example is shown below using the server cert distributed with the EMS samples.</p>
+
+    <code>    &lt;ConnectionNode alias="EMS-SERVER" url="ssl://localhost:7243" user="admin" password="" autoConnect="true"&gt;<br/>
+	&nbsp;&nbsp;&nbsp;
+	&lt;SSLParam name="com.tibco.tibjms.ssl.trace" type="boolean" value="true" /&gt;<br/>
+	&nbsp;&nbsp;&nbsp;
+	&lt;SSLParam name="com.tibco.tibjms.ssl.trusted_certs" type="string" value="C:\tibco\ems\5.1\samples\certs\server_root.cert.pem" /&gt;<br/>
+	&nbsp;&nbsp;&nbsp;
+	&lt;SSLParam name="com.tibco.tibjms.ssl.expected_hostname" type="string" value="server" /&gt;<br/>
+    &lt;/ConnectionNode&gt;</code><p>Note; for encryption only, server certificate verification must be disabled as shown below:</p>
+    
+    <code>    &lt;ConnectionNode alias="EMS-SERVER" url="ssl://localhost:7243" user="admin" password="" autoConnect="true"&gt;<br/>
+	&nbsp;&nbsp;&nbsp;
+	&lt;SSLParam name="com.tibco.tibjms.ssl.enable_verify_host" type="boolean" value="false" /&gt;<br/>
+    &lt;/ConnectionNode&gt;</code>
+
+    <p>The following additional jar files must also be added to the CLASSPATH in the rungems.cmd file:</p>
+
+	<code>&nbsp;&nbsp;slf4j-api-1.4.2.jar (slf4j-api-1.5.2.jar for EMS 8.3 or higher)</code><br>
+	<code>&nbsp;&nbsp;slf4j-simple-1.4.2.jar (slf4j-simple-1.5.2.jar for EMS 8.3 or higher)</code>
+
+         <h3><a name="encrypt"/>Encrypting User Passwords</h3>
+
+    <p>Use the Save Configuration dialog from the File menu to store servers.xml configuration with obfuscated user passwords.</p>
+
+    <p> Note: From version 5.1 GEMS uses a different mechanism for obfuscating passwords, previous versions used encryption software provided by the EMS 
+    tibcrypt.jar client library, however from version 8.4 EMS no longer ships with tibcrypt.jar. Any previously saved GEMS servers.xml file with encrypted passwords will not be able to be decrypted with GEMS 5.1 with EMS 8.4 client.
+To migrate the encrypted passwords first run GEMS 5.1 with EMS 8.3 client and resave the GEMS config to servers.xml, then 
+upgrade to EMS 8.4 client, restart GEMS with the new servers.xml and passwords will be decrypted correctly.</p>
+    
+    
+  <hr />
+  
+  </body>
+</html>

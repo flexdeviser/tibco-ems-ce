@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Monitoring TIBCO SubStation</title>
+      <style type="text/css">
+          .style1
+          {
+              width: 836px;
+          }
+          .style2
+          {
+              width: 777px;
+          }
+          .style3
+          {
+              width: 179px;
+          }
+      </style>
+  </head>
+
+  <body>
+  <h2> Monitoring TIBCO SubStation</h2>
+    <p>Gems 
+        includes support for the TIBCO SubStation V2 Admin interface. This allows users 
+        to monitor system metrics and issue some operational commands.</p>
+    <h3><a name="config"/>Configuration</h3>
+	<p>
+        Configuration is performed by 
+        adding one of more SS-Nodes to the servers.xml configuration file.</p>
+    <p>
+        For each SubStation that is 
+        connected to an EMS server you can add one 
+        SS-Node. For each defined SubStation Messaging Interface you can define an 
+        Interface node. Note that the SS-Node is subordinate to the 
+        EMS server's ConnectionNode</p>
+	<p>For example:</p>
+    <p class="MsoNormal">
+        <span style="font-size:10.0pt;font-family:&quot;Courier New&quot;">
+        &lt;ConnectionNode alias=&quot;Local&quot; url=&quot;tcp://localhost:7222&quot; user=&quot;admin&quot; 
+        password=&quot;&quot; autoConnect=&quot;true&quot;&gt;<o:p></o:p></span></p>
+    <p class="MsoNormal" style="margin-left: 40px">
+        <span style="font-size:10.0pt;font-family:&quot;Courier New&quot;">&lt;SS-Node 
+        alias=&quot;StarSub26&quot; adminqueue=&quot;tibss.admin.sxs26.request&quot; version=&quot;2.6&quot;&gt;<o:p></o:p></span></p>
+    <p class="MsoNormal" style="margin-left: 80px">
+        <span style="font-size:10.0pt;
+font-family:&quot;Courier New&quot;">&lt;Interface name=&quot;ESB01&quot;&gt;&lt;/Interface&gt;</span></p>
+    <p class="MsoNormal" style="margin-left: 40px">
+        <span style="font-size:10.0pt;font-family:&quot;Courier New&quot;">&lt;/SS-Node&gt;<o:p></o:p></span></p>
+    <p class="MsoNormal" style="margin-left: 40px">
+        <span style="font-size:10.0pt;font-family:&quot;Courier New&quot;">&lt;SS-Node 
+        alias=&quot;StarSub24&quot; adminqueue=&quot;tibss.admin.sxs24.request&quot; version=&quot;2.4&quot;&gt;<o:p></o:p></span></p>
+    <p class="MsoNormal">
+        <span style="font-size:10.0pt;font-family:&quot;Courier New&quot;">
+        <span style="mso-tab-count:1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </span>&lt;Interface name=&quot;IIXFR&quot;&gt;&lt;/Interface&gt;<o:p></o:p></span></p>
+    <p class="MsoNormal">
+        <span style="font-size:10.0pt;font-family:&quot;Courier New&quot;">
+        <span style="mso-tab-count:1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </span>&lt;Interface name=&quot;TXF2&quot;&gt;&lt;/Interface&gt;<o:p></o:p></span></p>
+    <p class="MsoNormal" style="margin-left: 40px">
+        <span style="font-size:10.0pt;font-family:&quot;Courier New&quot;">&lt;/SS-Node&gt;<o:p></o:p></span></p>
+    <p class="MsoNormal">
+        <span style="font-size:10.0pt;font-family:&quot;Courier New&quot;">
+        &lt;/ConnectionNode&gt;<o:p></o:p></span></p>
+    <p>
+        In this example we have two SubStations 
+        connected to the same EMS server. The first is 
+        a R2.6 system and the second is a R2.4 system.</p>
+ 	<p>SS-Node attributes:</p>
+  <ul>
+ 	  <li><b>alias.</b> This is the "Name" of the SubStation instance. It is displayed 
+          under the EMS server tree as a Folder icon.</li>
+ 	  <li><b>adminqueue.</b> The name of 
+          the queue that SubStation uses to handle admin requests. This value is 
+          customizable in the SubStation configuration, but the name used by the default 
+          configuration is tibss.admin.sxs.request.</li>
+      <li><b>version.</b> The version of 
+          SubStation. The admin interface changed slightly at R2.5 so this value needs to 
+          be set for version 2.5 and above. If the value is not set the format is assumed 
+          to be the old 2.4 format to provide backward compatibility.</li>
+  </ul>
+ 	<p>Interface attributes:</p>
+  <ul>
+ 	  <li><b>name.</b> This is the "Name" of the SubStation instance. It is displayed 
+          under the EMS server tree as a Folder icon.The interface ID specified in the 
+          SubStation Configuration. The value can be determined from the SubStation 
+          configuration files, the SubStation task on the mainframe or via the Interfaces 
+          panel in Gems.</li>
+  </ul>
+<h3><a name="display"/>Display Panels</h3>
+</a>
+    <p>Gems allows a number of panels to be displayed for each SubStation. Clicking on 
+        each of the nodes will display relevant information</p>
+<h4>Root Node</h4>
+<p>Clicking on the root node (name value is the Alias name in the configuration 
+    file) will display the System Summary panel.</p>
+ 	<p><img src="../images/ssrootnode.jpg" alt="Root Node"  /><br>
+ 	<em>Figure 1</em></p>
+ 	<p>The values displayed are taken from the response to the SubStation SHOW,ALL admin 
+        command.</p>
+      <p>The following fields contain useful information:</p>
+      <table border="1" cellpadding="0" cellspacing="0" class="style1">
+          <tr>
+              <td>
+                  UoW Total Allocations</td>
+              <td>
+                  The number of processed messages since the system started.</td>
+          </tr>
+          <tr>
+              <td>
+                  UoW Hi Water Mark</td>
+              <td>
+                  The maximum number of requests being concurrently processed.</td>
+          </tr>
+          <tr>
+              <td>
+                  UoW Currently Active </td>
+              <td>
+                  The current number of requests in flight.</td>
+          </tr>
+          <tr>
+              <td>
+                  UOW Max List size</td>
+              <td>
+                  The maximum configured number of concurrent requests.</td>
+          </tr>
+          <tr>
+              <td>
+                  Uow Stress Status</td>
+              <td>
+                  The current stress state. If the number is greater than 0 the value box is 
+                  turned to Yellow or Red.</td>
+          </tr>
+      </table>
+ 	<p>&nbsp;</p>
+<h4>Counters Node</h4>
+<p>The counters node gives statistics about how many times Recipes and Triggers have 
+    been called. Either since start up or the last REST,COUNTERS command.</p>
+<p><img src="../images/sscounters.jpg" alt="Counters Display"/><br>
+ 	  <em>Figure 2</em></p>
+      <p>The following fields contain useful information:</p>
+      <table border="1" cellpadding="0" cellspacing="0" class="style1">
+          <tr>
+              <td class="style3">
+                  Interface Version </td>
+              <td class="style2">
+                  Shows the version of the SubStation node. Ensure this matches the version in the 
+                  servers.xml configuration.</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Operational Commands</td>
+              <td class="style2">
+                  Lists the number commands sent to SunStation from the mainframe console or 
+                  through the Admin interface</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Used</td>
+              <td class="style2">
+                  The number of times a Recipe or Trigger has been invoked.</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Errors</td>
+              <td class="style2">
+                  The number of times an error condition has been detected. For example, this 
+                  could be the number of times a CICS transaction has abended.</td>
+          </tr>
+          </table>
+<h4>Interfaces Node</h4>
+  <p>The interfaces node shows information about each of the configured Interfaces. 
+      All systems will have a Master and ADMIN interface and at least one XFR 
+      (Transformer) interface. Each system will have one or more CICS or IMS 
+      interfaces depending on the configuration of the system.</p>
+  <p><img src="../images/ssinterfaces.jpg" alt="Interfaces Display" /><br>
+ 	    <em>Figure 3</em></p>
+      <p>The following fields contain useful information:</p>
+      <table border="1" cellpadding="0" cellspacing="0" class="style1">
+          <tr>
+              <td class="style3">
+                  Busy</td>
+              <td class="style2">
+                  The number of times all interface workers were in use.</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  AppId</td>
+              <td class="style2">
+                  The VTM applid of the connected System.</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Status</td>
+              <td class="style2">
+                  For CICS and IMS interfaces, shows if the interfaces is currently connected to 
+                  the configured system.</td>
+          </tr>
+          </table>
+<h4>Transports Node</h4>
+  <p>The transports node list the transports defined to SubStation</p>
+<p style="margin-bottom: 19px"><img src="../images/sstransports.jpg"alt="Transports Display"><br>
+  <em> Figure 4</em>
+      <p>The following fields contain useful information:</p>
+      <table border="1" cellpadding="0" cellspacing="0" class="style1">
+          <tr>
+              <td class="style3">
+                  State</td>
+              <td class="style2">
+                  The current state of the interface</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Summary Active</td>
+              <td class="style2">
+                  The current state of the interface</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Summary Unused</td>
+              <td class="style2">
+                  Number of transports that have never been started</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Summary Disabled</td>
+              <td class="style2">
+                  Number of transports disabled</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Summary In Error</td>
+              <td class="style2">
+                  Number of transports in an error state.</td>
+          </tr>
+          </table>
+<h4>Active Recipes</h4>
+  <p>Lists all of the Recipes that are currently active. Right clicking on a Recipe 
+      name brings up a pop up menu that provides the option to Refresh the recipe 
+      definition or to Disable the recipe.</p>
+  <p><img src="../images/ssrecipes.jpg" alt="Active Recipes Display" /><br>
+    <em> Figure 5</em>
+  <h4>Active Triggers</h4>
+  <p>Lists all of the Triggers that are currently active. Right clicking on a Trigger 
+      name brings up a pop up menu that provides the option to Refresh the Trigger 
+      definition or to Disable the Trigger.</p>
+  <p><img src="../images/sstriggers.jpg" alt="Triggers Display" /> <br>
+    <em>Figure 6</em>
+  <h4>Disabled</h4>
+    <p>List all the Triggers and Recipes that are disabled. A right click menu allows 
+        the disabled objects to be Enabled or the definition to be refreshed.</p>
+    <p><img src="../images/ssdisabled.jpg" alt="Disabled Display"><br>
+    <em>Figure 8 </em></p>
+      <p>The following fields contain useful information:</p>
+      <table border="1" cellpadding="0" cellspacing="0" class="style1">
+          <tr>
+              <td class="style3">
+                  Identifier</td>
+              <td class="style2">
+                  The name of the Recipe or Trigger</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  SSType</td>
+              <td class="style2">
+                  Shows if this is a Recipe or a Trigger</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Reason</td>
+              <td class="style2">
+                  Shows the reason why it is disabled. Could be as a result of a user request or 
+                  disabled by the system due to error threshold.</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Disable Date/Time</td>
+              <td class="style2">
+                  When the object was disabled</td>
+          </tr>
+          </table>
+  <h4>Listeners</h4>
+    <p>The listeners panel shows the Destinations that SubStation is listening too for 
+        messages. NOTE: The display doesn't distinguish between Queues or Topics.</p>
+    <p><img src="../images/sslisteners.jpg" alt="Listeners Display"><br>
+    <em>Figure 9</em></p>
+<h3><a name="ssmenu"/>SubStation Menu</h3>
+</a>
+    <p>When a SubStation SS-Node entries is defined in the servers.xml file, the 
+        SubStation menu will be displayed.</p>
+    <p>Note: That options are only active if a Substation node or one of the child nodes 
+        are selected in the node tree</p>
+<p>The following Menu options are available:</p>
+      <table border="1" cellpadding="0" cellspacing="0" class="style1">
+          <tr>
+              <td class="style3">
+                  Refresh </td>
+              <td class="style2">
+                  Refreshes the currently selected Recipe or Trigger</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Enable </td>
+              <td class="style2">
+                  Enables the currently selected Recipe or Trigger</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Disable </td>
+              <td class="style2">
+                  Disables the currently selected Recipe or Trigger</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Unload </td>
+              <td class="style2">
+                  Unloads the currently selected Recipe or Trigger making the Object unavailable 
+                  to the SubStation. This doesn't change the stored configuration definition.</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Enable New Object </td>
+              <td class="style2">
+                  Allows a object newly added to the configuration file to be enabled. See next 
+                  section for details.</td>
+          </tr>
+          <tr>
+              <td class="style3">
+                  Reset Counters</td>
+              <td class="style2">
+                  Resets the counters under the Counters Node</td>
+          </tr>
+          </table>
+  <h4>Enable New Object</h4>
+    <p>The Enable new Object Dialog allows a object that is added to the SubStation 
+        configuration to be enabled without having to recycle the SubStation.</p>
+        <p><img src="../images/ssnewobj.jpg" alt="New Object"><br></p>
+    <p>Enter the name of the Recipe or Trigger in the Name box. Then select the object 
+        type and press OK.</p>
+      <hr>
+
+  </body>
+</html>

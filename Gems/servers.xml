@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+
+<EMS-Servers>
+    <ConnectionNode alias="EMS-SERVER1" url="tcp://localhost:7222" user="admin" password="" autoConnect="true" logServerInfo="Always" logDir="./log" queueNamePattern="&gt;" topicNamePattern="&gt;" userNameFilter="">
+	<WarnLimits Connections="2000" Sessions="20000" Queues="2000" Topics="2000" Durables="2000" PendingMsgs="1000000" PendingMsgSize="500000000" InMsgRate="5000" RespTime="500"/>
+	<ErrorLimits Connections="5000" Sessions="50000" Queues="5000" Topics="5000" Durables="5000" PendingMsgs="5000000"  PendingMsgSize="4000000000" InMsgRate="10000" RespTime="1000"/>
+	
+	<EventMonitor maxDisplayedEvents="50" enabled="true">
+	    <EventSubscription monitorTopic="$sys.monitor.limits.*"/>
+	    <EventSubscription monitorTopic="$sys.monitor.server.warning"/>
+	</EventMonitor>
+    </ConnectionNode>
+</EMS-Servers>
+
+<!-- GEMS Server Configuration File
+===================================
+
+Edit this file to configure your EMS server connections and their Warning/Error limits appropriate for you environment.
+ConnectionNode elements can be grouped in the tree view by specifying custom elements.
+For example, to group test and dev environments separately:
+
+<MyProject>
+    <DEV>
+	<ConnectionNode alias="DEV-EMS1"....
+	</ConnectionNode>
+	<ConnectionNode alias="DEV-EMS2"....
+	</ConnectionNode>
+    </DEV>
+    <TEST>
+	<ConnectionNode alias="TEST-EMS1"....
+	</ConnectionNode>
+	<ConnectionNode alias="TEST-EMS2"....
+	</ConnectionNode>
+    </TEST>
+</MyProject>
+
+Custom icons can be displayed in the tree view by specifying the path to an icon file, eg:
+	<MyProject icon="images/myImage1.gif">
+	    <DEV icon="images/myImage2.gif">
+
+Create a ConnectionNode element for each EMS server (or FT pair) and specify the following attributes:
+	- alias: an alias to represent the server in GEMS (do not include invalid filename characters)
+	- url: the connection URL for the EMS server (FT URL may be given as described below)
+	- user: the administrator username, an admin user with view only rights may be used to restrict access
+	- password: administrator user's password
+	- autoConnect: if true GEMS will automatically connect and reconnect after failure
+	- logServerInfo: Specify one of:
+		- Never: Never log server info
+		- WarnLimits: Log server info only when a warning limit is broken
+		- ErrorLimits: Log server info only when an error limit is broken
+		- Always: Always log server info
+	- logDir: Directory path for server info log files, a new log file will be created for each day
+	- queueNamePattern: only show queues matching name pattern
+	- topicNamePattern: only show topics matching name pattern
+	- queueStoreFilter: only show queues assigned to store name
+	- topicStoreFilter: only show topics assigned to store name
+	- userNameFilter: only show clients for user name 
+	- icon: an optional custom icon file
+
+
+
+FT URLs
+=======
+
+For fault tolerant active/standby EMS deployments an FT comma-separated URL may be specified for the ConnectionNode, note the following:
+	
+	- GEMS uses EMS Admin connections which are permitted to standby instances. When AutoReconnectToPrimary in gems.props is set to true GEMS will always attempt to reconnect to the active server by swapping the server names in the URL.
+	- Check that the FaultTolerantState is shown as FULLY_OPERATIONAL in the Server Monitor display, this indicates that the backup is running and connected to the primary.
+	
+
+SSL
+===
+
+SSL Parameters may be set using the SSLParam element, refer to com.tibco.tibjms.TibjmsSSL in the EMS documentation for
+all available SSL parameters. An example is shown below using the server cert distributed with the EMS samples.
+
+    <ConnectionNode alias="EMS-SERVER" url="ssl://localhost:7243" user="admin" password="" autoConnect="true">
+	<SSLParam name="com.tibco.tibjms.ssl.trace" type="boolean" value="true" />
+	<SSLParam name="com.tibco.tibjms.ssl.trusted_certs" type="string" value="C:\tibco\ems\samples\certs\server_root.cert.pem" />
+	<SSLParam name="com.tibco.tibjms.ssl.expected_hostname" type="string" value="server" />
+    </ConnectionNode>
+
+Note; for encryption only, server certificate verification must be disabled as shown below:
+    <ConnectionNode alias="EMS-SERVER" url="ssl://localhost:7243" user="admin" password="" autoConnect="true">
+	<SSLParam name="com.tibco.tibjms.ssl.enable_verify_host" type="boolean" value="false" />
+    </ConnectionNode>
+
+
+Event Monitoring
+================
+
+An event monitor for each EMS server may be configured to subscribe to $sys.monitor events.
+The example below shows subscriptions for limit events (eg queue maxmsgs limit reached) and error events such as connection errors and route errors. See EMS documentation for full list of $sys.monitor topics.
+Events that have been read may be cleared via the right mouse button menu on the Event Monitor Display.
+Destinations may also be monitored, eg a subscription of $sys.monitor.Q.r.MyErrorQueue will generate a monitor event when a message is sent to MyErrorQueue. The original message sent to MyErorrQueue can be retrieved by double clicking on the event message to open the message window then selecting "View Original Message..." from the Message menu.
+
+Another example use of event monitoring is to highlight any messages that do not have properties
+set correctly. Eg to check that a destination should only be used for non-persistent messages a 
+selector may be specified to check the mode property in the monitor message, as shown below.
+For list of available monitor message properties see Appendix B in the EMS Users Guide.
+
+    <ConnectionNode alias="EMS-SERVER" url="tcp://localhost:7222" user="admin" password="" autoConnect="true">
+	<EventMonitor maxDisplayedEvents="50" enabled="true">
+	    <EventSubscription monitorTopic="$sys.monitor.limits.*"/>
+	    <EventSubscription monitorTopic="$sys.monitor.*.error"/>
+	    <EventSubscription monitorTopic="$sys.monitor.server.warning"/>
+	    <EventSubscription monitorTopic="$sys.monitor.Q.r.MyNonPersistentQ" selector="mode='PERSISTENT'"/>
+	</EventMonitor>
+    </ConnectionNode>
+
+
+
+Note: The event monitor is disabled for standby servers and is not started automatically following an FT switch.
+
+
+SubStation Monitoring
+=====================
+
+TIBCO SubStation deployments that use EMS as a transport may be managed and monitored with GEMS. To enable the SubStation plugin add an "SS-Node" element within the relevant EMS ConnectionNode. Multiple SS-Node entries may be specified for multiple SubStation instances. Each SubStation node can have multiple Transformer interfaces defined. If you are unsure how many are defined look for XFR entries in the "Interfaces" panel. Each of these interfaces need to be defined to GEMS. Note; ensure you set the version element with SubStation version 2.6 and above.
+
+There are two arguments that define the SubStation; an alias which is just a name that will appear in the tree view, and adminqueue which is the name of the EMS queue that exposes the SubStation remote admin feature. There is then an "Interface" element for each interface that will be displayed in the tree. There are two types of interface that can be configured. First is the EMS interface which has a single argument called "name" that specifies the interface name as defined to SubStation. Next is the IMS interface which allows GEMS to display statistics about the IMS BES interface. Only specify an IMS interface if IMS is used as a BES, all CICS configuration should not have this specified.
+
+Toolbar and PopUp Menu entries to Refresh, Enable and Disable SubStation objects are available, for details on these commands please refer to SubStation documentation. 
+
+An EventMonitor (as described above) may also be configured to monitor for SubStation error messages.
+ 
+Within SubStation ensure that correlation ids are passed back for admin requests. To do that to go into EMS panel for the definition for the Recipe "Substation-Admin" and set the Copy Correlation flag to Y. If your system has a large number of defined resources it may be that the list is truncated. If this occurs simply modify the length of the BUFFER for the admin recipe (default name is BUF-IO-ADMIN and the length is 4096 bytes).
+
+The timeout that GEMS will wait for a response from SubStation may be configured in the gems.props file.
+
+Note; with a standard out of the box SubStation install commands sent via the remote interface will be echoed onto the JES log. The CONSOLE-MSG parameter can be set to prevent these appearing. It should also be noted that the remote interface commands and the results will also be written the LOG and TRACE DDs.
+
+Example:
+
+    <ConnectionNode alias="EMS-SERVER" url="tcp://localhost:7222" user="admin" password="" autoConnect="true">
+        <SS-Node alias="DevSubStation" adminqueue="tibss.admin.sxs.request" version="2.7">
+            <Interface name="ESB01"></Interface>
+		    <Interface name="IMS" type="IMS"></Interface>
+        </SS-Node>
+        <EventMonitor maxDisplayedEvents="50" enabled="true">
+            <EventSubscription monitorTopic="$sys.monitor.Q.r.tibss.error.out"/>
+        </EventMonitor>
+    </ConnectionNode>
+
+
+EMS Appliance Monitoring
+========================
+
+To monitor EMS Appliance V2.1 (or higher) running GEMS with EMS client library V8.1 or higher is required.
+
+Note; monitoring EMS Appliance V2.0 is not supported in this release, please use Gems4.1.
+
+====================================-->
+
+                                    

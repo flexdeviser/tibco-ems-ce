@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Migrating to TIBCO EMS Appliance</title>
+  </head>
+
+  <body>
+  <h2><a name="migappl"/>Migrating to TIBCO EMS Appliance</h2>
+
+<p>When provisioning the EMS Appliance as a replacement for one or more EMS servers, much of the existing configuration details will need to be migrated. The configuration types that will typically need to be migrated are:</p>
+<ul>
+    <li>Destinations (queues and topics)</li>
+    <li>Durables</li>
+    <li>Bridges</li>
+    <li>Users and Groups</li>
+    <li>ACLs</li>
+    <li>Factories</li>
+    <li>Routes</li>
+    <li>Pending Messages</li>
+</ul>
+<p>The EMS Appliance uses the JSON configuration style, the "Server JSON Editor" may be used to migrate existing configuration from a running EMS server to JSON format on the EMS Appliance.</p>
+
+<h3><a name="jsonedit"/>Using the Server JSON Editor</h3>
+
+
+<p>To edit a server's JSON configuration select "Edit Server JSON Config..." from the Server menu.</p>
+
+  <a href="jsonedit.htm" target="contentFrame">Using the Server JSON Configuration Editor</a>
+
+<p>A pair of fault tolerant EMS Appliances includes two primary EMS instances, each primary instance should be configured separately. Each primary instance has a backup instance on it's pair, the primary and secondary share the same JSON configuration file. Note, it is not required to apply changes to the secondary instance, any changes will be replicated to the secondary automatically by the appliance.</p>
+<p>
+For some configuration changes, it is necessary for the server to be restarted for the applied changes to take effect.
+To restart the EMS instance it is necessary to log on to the EMS Appliance CLI using the tibadm SSH user and issue the "services &lt;instance&gt; restart" command.
+Note; if the EMS instance fails to start due to a configuration error, it will be necessary to copy a valid backup JSON configuration to the appliance using the tibfile SFTP user, then import the copied configuration using the CLI before restarting. See EMS Appliance Installation Guide for details using the CLI commands.</p>
+
+
+    <p><b>Some EMS Appliance server properties are preconfigured and should not be changed. The JSON properties listed below are reserved and should not be changed unless instructed to do so by Tibco Support.</b></p>
+    <p>
+  <table width = "400" border="0">
+    <tr>
+      <td><strong>EMS Appliance Reserved JSON Properties:</strong></td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.max_msg_memory</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.processor_ids</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.msg_swapping</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.ft_heartbeat</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.ft_activation</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.logfile</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.multicast</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.tibrv_transports</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.tibss_transports</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.jre_library</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.jre_options</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.primary_listens[0].*</td>
+    </tr>
+    <tr>
+      <td>&nbsp;tibemsd.secondary_listens[0].*</td>
+    </tr>
+    <tr>
+      <td>&nbsp;stores[$meta.db].*</td>
+    </tr>
+    <tr>
+      <td>&nbsp;stores[$sys.nonfailsafe].*</td>
+    </tr>
+    <tr>
+      <td>&nbsp;stores[$sys.failsafe].*</td>
+    </tr>
+   </table>
+ 
+<h3><a name="timeouts"/>Detecting Network Connection Failure Parameters</h3>
+
+<p>This feature will allow the EMS server and its clients to detect network connection failures quickly. When these parameters are absent this feature is disabled, and connections will only close upon the operating system notification, which can in some cases can take 15 minutes, or more, depending on what the operating system's TCP keep alive is set to. These four parameters must all be set, if not, EMS will report an error on startup.</p>
+<p>These parameters should be configured for both EMS Appliance server instances. Values are specified in seconds, refer to the EMS User's Guide for more information.</p>
+<p>Some example JSON parameters are shown below:</p>
+
+<p>
+<code>
+&nbsp;&nbsp;"tibemsd":{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;"client_heartbeat_server":10,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;"client_timeout_server_connection":35,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;"server_heartbeat_client":10,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;"server_timeout_client_connection":30,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br/>
+&nbsp;&nbsp;},<br/>
+</code>
+
+<p>Use the JSON Config Editor to set these heartbeat parameters; e.g. select "Set client_heartbeat_server..." from the "Set Property" menu.</p>
+
+<h3><a name="stores"/>Configuring EMS Appliance Stores</h3>
+<p>The EMS Appliance pre-configures several data stores. In addition to the traditional "sys.meta, $sys.failsafe, $sys.unfailsafe stores the Standard Edition also creates three HDD stores for application use, whilst the High Performance Edition has three fusion stores (SSD) and one HDD store.</p>
+<p>Ensure you do not change the standard $sys stores, the additional HDD and fusion stores are all set to sync mode for synchronous I/O, if asynchronous is required the mode may be changed to "async".</p>
+<p>Additional stores may be created using the JSON Config Editor; select "New File Store..." from the Create menu. Note the following:</p>
+<ul>
+    <li>Only file stores are supported with the EMS Appliance.I.e. Database nor mstores are supported.</li>
+    <li>The store's file path must be correct, use SSD/&lt;filename&gt; or HDD/&lt;filename&gt;.</li>
+    <li>Do not set the processor_id parameter.</li>
+</ul>
+
+<h3><a name="consolidation"/>Server Consolidation with the EMS Appliance</h3>
+
+<p>Consider the following when migrating several EMS servers to a single FT pair of EMS Appliances.</p>
+<p>Firstly, a pair of FT appliances has two primary EMS instances. Ensure to distribute applications evenly fully utilising both instances.</p>
+<p>Secondly, follow these guidelines to host several applications and provide segregation within the same EMS instance:</p>
+<ul>
+    <li><b>Destination namespace:</b> Ensure queue and topics names conform to standard naming scheme and that there are no duplicate names in use by different applications.</li>
+    <li><b>Stores:</b> Ensure applications use different datastores for persistent messaging.</li>
+    <li><b>Listen Ports:</b> Optionally, configure different listen ports for different applications (ensure to configure both primary_listens and secondary_listens, see example below)</li>
+    <li><b>Security:</b> Ensure each application is authenticated with a different user name and password. Optionally set up permissions on destination access.</li>
+    <li><b>Limits:</b> Ensure server configuration upper bound limits are set appropriately (such as number of client connections and destination backlog limits) to prevent resource starvation.</li>
+    <li><b>Monitor:</b> Ensure application user metric's are monitored (e.g. number of connections, sessions, message backlog, message rates), and appropriate action taken when metrics exceed agreed margins.</li>
+
+</ul>
+
+<p>Use the JSON Config Editor to add any additional TCP listen ports; select "New Listen Port..." from the Create menu.</p>
+<p>The JSON extract below shows example primary_listens and secondary_listens configuration with an additional listen port on 7223.</p>
+<p>
+<code>
+&nbsp;&nbsp;"tibemsd":{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;"primary_listens": [{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ft_active":	true,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"url":	"tcp://ems-A-cross.local:7222"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"url":	"tcp://ems-A.local:7222"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"url":	"tcp://ems-A.local:7223"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;}],<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;"secondary_listens": [{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"ft_active":	true,<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"url":	"tcp://ems-B-cross.local:7222"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"url":	"tcp://ems-B.local:7222"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;},<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;{<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"url":	"tcp://ems-B.local:7223"<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;}],<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;...<br/>
+&nbsp;&nbsp;},<br/>
+</code>
+
+    <p><b style="color:red">Note; when adding additional ports ensure not to use ports that are used by the appliance pair's other instance, otherwise in the failover case, when both instances are running on the same appliance, there will be a port clash and the EMS instance will fail to start.</b></p>
+
+<h3><a name="pendingmsgs"/>Migrating Pending Messages</h3>
+<p>It is not possible to directly copy datastore files on to the appliance, if it is necessary to migrate pending queue messages to the appliance use the message copier dialog; select "Copy All Messages.." from the Queues menu.</p> 
+  <hr>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+#Simple Gems Property File
+#Fri May 13 11:04:33 BST 2005
+
+# Server connections configuration file:
+ServerConfigFile=servers.xml
+
+# Use these properties to reduce the number of destinations being monitored.
+# Only show queues that match given pattern. The pattern may contain the wildcards "*" and ">"  
+QueueNamePattern=>
+# Only show topics that match given pattern. The pattern may contain the wildcards "*" and ">"  
+TopicNamePattern=>
+# Only show connections, consumers etc for given user name
+UserNameFilter=
+
+# Comma separated list of views to hide (ACLs,Bridges,Channels,Connections,Consumers,Durables,Factories,Groups,Producers,Queues,Routes,Stores,Topics,Transactions,Transports,Users)
+HideViews=ACLs,Channels,Connections(System),Factories,Groups,Stores(DB),Stores,Transactions,Transports,Users
+
+# Allow message read operations, such as browse queue, subscribe to topic and browse durable in view only mode
+AllowMsgReadInViewOnlyMode=false
+
+

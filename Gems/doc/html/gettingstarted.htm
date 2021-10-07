@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Getting Started</title>
+  </head>
+
+  <body>
+  <h2> Getting Started </h2>
+    <h3><a name="running"/>Running Gems</h3>
+	<p>Run Gems by launching rungems.cmd</p>
+    <p>If your TIBCO home directory is not \tibco then you will need to edit rungems.cmd appropriately. 
+    For example if your TIBCO home directory is C:\tibhome then set the TIBEMS_ROOT variable to the EMS install directory under the TIBCO home directory:</p>
+  	<p style="margin-left: 40px">
+  	<code>set TIBEMS_ROOT=C:\tibhome\ems\8.1
+  	</code>
+	</p>
+    <p>To run, Gems requires the following:</p>
+  	<code>
+    <ul>
+      <li>The TIBCO EMS client jar files</li>
+      <li>Java JRE 1.7.0 or higher</li>
+    </ul>
+  	</code>
+<p>Ensure the java executable is available in your path, or edit the rungems.cmd file 
+    and set the path appropriately.</p>
+      <h3><a name="configdisp"/>Customising The Display</h3>
+<p>The <code>gems.props</code> configuration file contains various properties for customising the workspace. 
+For example the default workspace size can be configured using the DisplayWidth, and DisplayHeight properties.
+</p>
+<p>See <a href="config.htm" target="_self">Configuration Properties</a> for a complete list of available properties.</p>
+    <h3><a name="simple"/>Running Gems as a Monitoring Tool</h3>
+	<p>To run Gems in "view only" mode as a pure monitoring tool launch runsimplegems.cmd</p>
+	<p>Edit simplegems.props to hide any nonessential displays, and to restrict monitoring views to application specific set of queues and topics.</p>
+<h3><a name="configservers"/>Configuring EMS Server Connections</h3>
+ 	<p>Gems supports simultaneous connections to multiple EMS servers. A new EMS Server may be added using the "Add New EMS Server" option on the Edit menu, or alternatively these can be configured in the <code>servers.xml</code> file.</p>
+<p>To create a new server connection in the <code>servers.xml</code> file and add a new <code>ConnectionNode</code> element with the mandatory attributes "alias" "url" and "user" 
+    The list of available attributes are as follows:</p>
+<ul>
+    <li><b>alias:</b>&nbsp;Any descriptive name.</li>
+    <li><b>url:</b>&nbsp;The tcp connect string containing the hostname (or IP-Address) hosting the EMS server and the server's listen port</li>
+    <li><b>user:</b>&nbsp;A valid EMS user that has been configured with administrator permissions</li>
+    <li><b>password:</b>&nbsp;The administrator user;s password</li>
+    <li><b>autoConnect:</b>&nbsp;If true Gems will automatically connect and reconnect after failure</li>
+    <li><b>logServerInfo:</b>&nbsp;Logs all server information to a CSV file. Specify one of:</li>
+        <ul>
+        <li><b>Never:</b>&nbsp;Never log server info</li>
+        <li><b>WarnLimits::</b>&nbsp;Log server info only when a warning limit is broken</li>
+        <li><b>ErrorLimits:</b>&nbsp;Log server info only when an error limit is broken</li>
+        <li><b>Always:</b>&nbsp;Always log server info</li>
+        </ul>
+    <li><b>logDir:</b>&nbsp;Directory path for server info log files, a new log file will be created for each day</li>
+    <li><b>queueNamePattern:</b>&nbsp;only show queues matching name pattern</li>
+    <li><b>topicNamePattern:</b>&nbsp;only show topics matching name pattern</li>
+    <li><b>queueStoreFilter:</b>&nbsp;only show queues assigned to store name</li>
+    <li><b>topicStoreFilter:</b>&nbsp;only show topics assigned to store name</li>
+    <li><b>userNameFilter:</b>&nbsp;only show clients for user name</li>
+    <li><b>icon:</b>&nbsp;An optional custom icon file</li>
+</ul>
+
+    <p><code>ConnectionNode</code> elements can be grouped in the tree view by specifying custom elements.
+For example, to group test and dev environments separately:</p>
+<p style="margin-left: 40px"><code>
+&lt;MyProject&gt;<br/>
+    &nbsp;&nbsp;&nbsp;
+    &lt;DEV&gt;<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&lt;ConnectionNode alias="DEV-EMS1"....<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&lt;/ConnectionNode&gt;<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&lt;ConnectionNode alias="DEV-EMS2"....<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&lt;/ConnectionNode&gt;<br/>
+    &nbsp;&nbsp;&nbsp;
+    &lt;/DEV&gt;<br/>
+    &nbsp;&nbsp;&nbsp;
+    &lt;TEST&gt;<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&lt;ConnectionNode alias="TEST-EMS1"....<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&lt;/ConnectionNode&gt;<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&lt;ConnectionNode alias="TEST-EMS2"....<br/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&lt;/ConnectionNode&gt;<br/>
+    &nbsp;&nbsp;&nbsp;
+    &lt;/TEST&gt;<br/>
+&lt;/MyProject&gt;<br/>
+
+</code></p>
+
+
+    <p>The <code>ConnectionNode</code> element may also contain WarnLimits and ErrorLimits child elements. These elements can be used to configure limit values for the Server Monitor screen, indicating when values should be marked amber (warning) and red (error).
+    See the <code>servers.xml</code> file for an example.</p>
+<p>Custom icons can be displayed in the tree view by specifying the path to an icon 
+    file, for example:
+</p>
+<p style="margin-left: 40px"><code>
+	&lt;MyProject icon="images/myImage1.gif"&gt;<br />
+	    &nbsp;&nbsp;&nbsp;
+	    &lt;DEV icon="images/myImage2.gif"&gt;
+
+</code></p>
+
+    <p>Note: After editing the file Gems needs to be restarted for any configuration changes to take effect.</p>
+
+      <h3><a name="display"/>Main Display</h3>
+      
+      <p>The Gems workspace is divided into two main sections.  
+      On the left-hand side of the workspace the <em>tree view</em> shows a hierarchical view of configured EMS server 
+      connections and their contained objects. The right-hand side of the workspace the <em>tabbed view</em> show detailed 
+      information for the selected node from the tree view.</p>
+      
+       	<p><img src="../images/serverdisplay.jpg" alt="Main Display"  /><br>
+ 	<em>Figure 1 - Main Display</em></p>
+
+
+    <p>Note: In the tabbed view; the table data can be sorted by clicking on the column headers, 
+    or Control-clicking to apply secondary sorting.</p>
+    
+          
+          <p>When starting Gems the tabbed view shows the server monitor display. The server monitor display shows a consolidated table view of all EMS server connections 
+          with its current state and various statistical information, including:</p>
+        <ul>
+            <li>Number of client connections and sessions</li>
+            <li>Number of queues, topics and durables</li>
+            <li>Number of pending messages and pending message size</li>
+            <li>Message memory usage</li>
+            <li>Persistent message file size usage</li>
+            <li>Message rates</li>
+            <li>Disk read/write rates</li>
+            <li>EMS server response time (time taken for Gems to request and receive the latest server statistics information)</li>
+        </ul>
+        <p>These values can be highlighted when configurable limits are reached, either amber (for warning) or red (for error). These limits can be configured for each server connection in the <code>servers.xml</code> file.</p>
+	<p>To view totals for all displayed servers select "Show Server Totals" from the View menu.</p>
+        <p>To view the server monitor display select the root node in the <em>tree view</em> on the left-hand side of the workspace.</p>
+
+        <p>The display is updated every 20 seconds by default. This can be changed in the property configuration file.
+        However, since every refresh implies communicating to the server to request updated information and thus using a low refresh value may impact server performance.</p>
+        
+      <h3><a name="serverevents"/>Monitoring Server Events</h3>
+
+<p>An event monitor for each EMS server may be configured using the Event Monitor Editor (on Edit menu) or in the <code>servers.xml</code> file to subscribe to $sys.monitor events.
+The example below shows subscriptions for limit events (e.g. queue maxmsgs limit reached) and error events such as connection errors and route errors. See EMS documentation for full list of $sys.monitor topics.</p>
+<p>
+<code>
+&nbsp;&nbsp;&lt;ConnectionNode alias="EMS-SERVER" url="tcp://localhost:7222" user="admin" password="" autoConnect="true"&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;EventMonitor maxDisplayedEvents="50" enabled="true"&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;EventSubscription monitorTopic="$sys.monitor.limits.*"/&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;EventSubscription monitorTopic="$sys.monitor.*.error"/&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;EventSubscription monitorTopic="$sys.monitor.server.warning"/&gt;<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;/EventMonitor&gt;<br/>
+&nbsp;&nbsp;&lt;/ConnectionNode&gt;<br/>
+</code>
+<p>Events are shown on the Event Monitor Display, and further information about the event may be viewed by double clicking on the event row. Events may be cleared via the right mouse button pop-up menu.</p>
+<p>Destinations may also be monitored, e.g. a subscription of $sys.monitor.Q.r.MyErrorQueue will generate a monitor event when a message is sent to MyErrorQueue. The original message sent to MyErorrQueue can be retrieved by double clicking on the event message to open the event message window then selecting "View Original Message..." from the Message menu.  </p>
+<p>
+<code>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;EventSubscription monitorTopic="$sys.monitor.Q.r.MyErrorQueue"/&gt;<br/>
+</code>
+
+<p>Another example use of event monitoring is to highlight any messages that do not have properties
+set correctly. E.g. to check that a destination should only be used for non-persistent messages a 
+selector may be specified to check the mode property in the monitor message, as shown below.
+For list of available monitor message properties see Appendix B in the EMS Users Guide.</p>
+<p>
+<code>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;EventSubscription monitorTopic="$sys.monitor.Q.r.MyNonPersistentQ" selector="mode='PERSISTENT'"/&gt;<br/>
+</code>
+
+<p>Note: The event monitor is disabled for standby servers and is not started automatically following an FT switch.</p>
+
+      <h3><a name="saveconfig"/>Saving Configuration</h3>
+<p>Select "Save Config..." from the File menu to save the current configuration to the <code>servers.xml</code> file. Any EMS server passwords will be encrypted and the configuration XML may be edited manually, however any manual changes will not take affect until Gems is restarted. </p>
+
+  <hr>
+
+  </body>
+</html>

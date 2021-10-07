@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Monitoring TIBCO EMS Appliance</title>
+  </head>
+
+  <body>
+  <h2><a name="monappl"/> Monitoring TIBCO EMS Appliance V2.1 and higher</h2>
+<p>If the EMS server is running on the TIBCO EMS Appliance hardware device V2.1 (or higher) the fault tolerant state is displayed in the FaultTolerantState column on the main EMS server display, the following values can be displayed:<p/>
+<ul>
+    <li><b style="background-color:green;">REPLICATING</b>&nbsp; This is shown in normal operation when the server is replicating with its peer and the secondary is standing by for failover.</li>
+    <li><b style="background-color:orange;">STANDALONE</b>&nbsp; This is shown when the server is running standalone with no fault tolerance in operation, e.g. the second appliance is down.</li>
+    <li><b style="background-color:orange;">SYNCHRONIZING(50%)</b>&nbsp; This is shown when the server is synchronizing state with its peer. The overall sync progress % is shown.</li>
+    <li><b style="background-color:orange;">PAUSED</b>&nbsp; This is shown when the server is paused.</li>
+    <li><b style="background-color:orange;">WAIT_FOR_PEER</b>&nbsp; This is shown when the server waiting for its peer to come up.</li>
+    <li><b style="background-color:red;">ERROR</b>&nbsp; This is shown when the fault tolerant state cannot be determined.</li>
+</ul>
+    <p><b>Note; for correct monitoring status ensure you upgrade the EMS client library to V8.1 or higher.</b></p>
+
+<p>To show normal operating state as FULLY_OPERATIONAL (instead of REPLICATING) to be consistent with software FT state monitoring set the ShowApplFullyOp to true in the gems.props file. </p>
+
+  <h2>Monitoring TIBCO EMS Appliance V2.0</h2>
+<p>
+Monitoring EMS Appliance V2.0 is not supported in this release, please use Gems 4.1.
+</p>
+
+  <hr>
+
+  </body>
+</html>

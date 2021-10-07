@@ -1,0 +1,344 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Gems Change Log</title>
+</head>
+
+<body>
+<h2>Gems Change Log</h2>
+
+<p><strong>Version 5.2</strong></p>
+<ul>
+<li>Added support for new EMS 8.5 server properties:</li>
+    <ul>
+	<li>getHealthCheckListen</li>
+	<li>getSecondaryHealthCheckListen</li>
+    </ul>
+<li>Added ability to specify servers.xml from command line</li>
+<li>Added script to build docker image: build-docker-image.sh</li>
+<li>Added page next on Queue Browser</li>
+<li>Added ability to set following properties to JSON Editor:</li>
+    <ul>
+	<li>always_exit_on disk_error</li>
+	<li>health_check_listen</li>
+	<li>secondary_health_check_listen</li>
+    </ul>
+<li>Added Local and XA Transaction Monitors to Server menu</li>
+<li>Added In/OutByteRate, In/OutTotalBytes, AvgMsgSize to Queue and Topic Info display</li>
+<li>Added ephemeral client port to Connection Info display</li>
+<li>Added ability to set default store size when creating new file store in JSON Editor</li>
+<li>Added event type combo box to Queue/Topic Monitors</li>
+</ul>
+
+<p><strong>Version 5.1</strong></p>
+<ul>
+<li>Added support for new EMS 8.4 server properties:</li>
+    <ul>
+    <li>get/setLargeDestCount</li>
+    <li>get/setLargeDestSize</li>
+    <li>getAdminConnectionCount</li>
+    <li>getClientConnectionCount</li>
+    <li>isAlwaysExitOnDiskErrorEnabled</li>
+    <li>isSSLRequireRouteCertOnly</li>
+    </ul>
+<li>Destination PendingMsgCount/Size fields are highlighted in red if they reach MaxMsgs/Bytes or Server's large destination limits (whichever is the smaller).</li>
+<li>Added ability to send previously saved messages, available from Queues and Topics menu.</li>
+<li>Added right click menu on tree view with option for connecting/disconnecting all servers in folder.</li>
+<li>Client side trace can now be enabled on a client connection from the Server menu.</li>
+<li>Now prompts to save config changes on close.</li>
+<li>Server Info panel now highlights if EMS server has config changes that require restart.</li>
+<li>Stores can now be sorted e.g. by file size etc.</li>
+<li>JSON Editor validation now checks for transport bridge duplicates.</li>
+<li>Copying browsed queue messages or all queue messages now preserve message expiration.</li>
+<li>Added MaxMonitorEvents property in gems.props:</li>
+    <ul>
+    <li>Limits the number of message events for Destination monitor and browser dialogs.</li>
+    </ul>
+</ul>
+
+<p>Note: EMS 8.4 no longer ships with tibcrypt.jar; any saved GEMS encypted passwords will not be decrypted with EMS 8.4 client.
+To migrate GEMS encrypted passwords first run GEMS 5.1 with EMS 8.3 client and resave the GEMS config to servers.xml, then 
+upgrade to EMS 8.4 client, restart GEMS with the new servers.xml and passwords will be decrypted correctly.</p>
+
+<p><strong>Version 5.0</strong></p>
+<ul>
+<li>Added Today's and Historical Charts to view stats from Server Info CSV log files.</li>
+<li>Added ability to copy a queue's messages to another destination (or server), select "Copy All Messages.." from Queues menu.</li>
+
+<li>Server Info logging is now enabled by default.</li>
+<li>Added icons to tree view.</li>
+<li> Added ability to filter displayed queues, topics for a specified store:</li>
+	<ul>
+	<li> A queueStoreFilter/topicStoreFilter can be set (in servers.xml or on Connection tab) only destinations that are assigned to the store are displayed.</li>
+	</ul>
+
+<li>Queues display now sorts by PendingMsgCount by default.</li>
+<li>Queues and Topics sub-trees now hidden (can be overriden using HideTreeDests property in gems.props).</li>
+<li>Message import now copies JMSType and JMSCorrelationID.</li>
+<li>Server totals are now shown by default in the Server Monitor display.</li>
+<li>Server Warning and Error limits are now enabled by default.</li>
+<li>Added "New Listen Port" option to Create menu in JSON Config Editor.</li>
+
+</ul>
+
+<p><strong>Version 4.5</strong></p>
+<ul>
+<li>Added support to set server properties in JSON Config Editor.</li>
+<li>Added support to import LDAP properties in JSON Config Editor.</li>
+<li>Added ConnectionId to Temporaries view in Queues and Topics display.</li>
+<li>Added LDAP parameters to Server Info tab.</li>
+<li>Added topic prefetch property to Route Info display.</li>
+<li>Added AllowMsgReadInViewOnlyMode property in gems.props to allow/disallow message browsing in read only mode.</li>
+<li>Added AutoConnectOnStart property in gems.props, when false delays the auto connect until after the main display is shown.</li>
+<li>Added support for TIBCO Substation ES-2.9.</li>
+<li>Improvements for handling timeout exceptions waiting for server response. </li>
+</ul>
+
+<p><strong>Version 4.4</strong></p>
+<ul>
+<li>Added additional support to JSON Config Editor for:</li>
+	<ul>
+	<li>Importing ACLs</li>
+	<li>Importing Routes</li>
+	<li>Creating file stores</li>
+	<li>Creating connection factories</li>
+	<li>Validation function to check for duplicates</li>
+	</ul>
+<li>Added ability to set destination permissions from popup Queue/Topic displays.</li>
+<li>Column headers are now printed to server statistics log file on restart.</li>
+<li>The property setting AutoReconnectToPrimary now defaults to true.</li>
+</ul>
+
+<p><strong>Version 4.3</strong></p>
+<ul>
+<li>Added support for EMS8.2:</li>
+	<ul>
+	<li>FTLParams shown on Server Info display.</li>
+	<li>FTL transports shown on Transports display.</li>
+	</ul>
+<li>Added "Update Connection Factory" to Factories menu.</li>
+<li>Principal lists in destination and admin permissions dialogs are now sorted.</li>
+</ul>
+
+<p><strong>Version 4.2</strong></p>
+<ul>
+<li>Added ability to filter displayed queues, topics and clients for each EMS Server.</li>
+	<ul>
+	<li>A queueNamePattern/topicNamePattern can be set (in servers.xml or on Connection tab) only destinations that match the pattern are displayed.</li>
+	<li>A userNameFilter can also be set to limit client displays for given user name.</li>
+	</ul>
+<li>Added support for EMS Appliance V2.1.</li>
+</ul>
+
+<p><strong>Version 4.1</strong></p>
+<ul>
+<li>Added FaultTolerantState to main EMS Server display (see "Monitoring Fault Tolerant Servers" section).</li>
+<li>Added Connections(User) display, shows connection statistics per user.</li>
+<li>Added support for monitoring TIBCO EMS Appliance (see "Monitoring TIBCO EMS Appliance" section).</li>
+<li>Added Server JSON Configuration Editor to support migration to EMS Appliance (see "Migrating to TIBCO EMS Appliance" section).</li>
+<li>Added support for monitoring by application when several applications share the same EMS server:</li>
+	<ul>
+	<li>When ViewOnlyMode and QueueNamePattern/TopicNamePattern are set (in gems.props) only destinations that match the pattern are displayed.</li>
+	<li>Ability to filter display for given user name, see UserNameFilter in gems.props.</li>
+	</ul>
+<li>Added runsimplegems.cmd and simplegems.props examples to run as a view only monitoring tool.</li>
+<li>Added support for TIBCO Substation ES-2.8.</li>
+<li>Added ability to display Substation output from CICS commands SXTH/Transactions.</li>
+
+</ul>
+
+<p><strong>Version 4.0</strong></p>
+<ul>
+<li>Added support for EMS8 and JMS2.0</li>
+	<ul>
+	<li>New Topic Subscriptions Display</li>
+	<li>Support for message JMSDeliveryTime</li>
+	<li>Messages awaiting their delivery time are held in a delayed queue ($sys.delayed.q.&lt;queue name&gt; or $sys.delayed.t.&lt;topic name&gt;)</li>
+	<li>Messages held in delayed queues may be browsed and managed using the Queue Browser.</li>
+	</ul>
+<li>All displays that list destinations now use cursor based calls to reduce server impact when there are many destinations.</li>
+<li>Default cursor size may be configured in gems.props.</li>
+<li>JRE1.5 is no longer supported.</li>
+<li>To access EMS8 & JMS2.0 features you must use JRE1.7 and EMS8 client jars, including new jms-2.0.jar which replaces jms.jar.</li>
+</ul>
+
+<p><strong>Version 3.5</strong></p>
+<ul>
+<li>Added new Edit menu options:</li>
+	<ul>
+	<li>Add New EMS Server</li>
+	<li>Remove Selected EMS Server</li>
+	<li>Add New Folder</li>
+	<li>Remove Selected Folder</li>
+	<li>Edit Warning Limts</li>
+	<li>Edit Error Limits</li>
+	<li>Edit Monitor Events</li>
+	</ul>
+<li>Added support for new EMS 6.1 features: destination persistent message size/count, data store read/write stats.</li>
+<li>Added "Save Config" option to File menu to save configuration with support for password encryption.</li>
+<li>Added show queue/topic consumers display</li>
+<li>Added EMS server response time (millisecs) to the Server Monitor display, charting and logging.</li>
+<li>Added ability to configure maximum number of consumers/producers displayed in main display, see MaxConsumers, MaxProducers in gems.props.</li>
+<li>Added ability to copy and destroy selected messages in Durable Browser.</li>
+<li>Added JNDI lookup option from Server menu.</li>
+<li>Improved destination monitor display, with latency statistics.</li>
+<li>Added support for TIBCO Substation ES-2.7 (Message Format changes).</li>
+<li>Added ability to invoke SubStation Recipe RECOVER command.</li>
+<li>Note: Support for EMS 4.X has been deprecated.</li>
+
+</ul>
+
+<p><strong>Version 3.4</strong></p>
+<ul>
+<li>Added show queues/topics display</li>
+<li>Added queue/topic properties dialog</li>
+<li>Improved Charting display and new features including; Properties Editor, Print, Copy and Save As menu options</li>
+<li>New Request/Reply Tester </li>
+<li>HTML Help Display (JRE 1.6 only)</li>
+<li>Improved Transports and Transactions display</li>
+<li>Added ability to configure maximum number of queues/topics displayed in main display, see MaxQueues, MaxTopics in gems.props.</li>
+<li>Added ability to configure main server display column positions, see ServerInfoColPositions property in gems.props.</li>
+<li>Added ability to configure delimiter used as separator between values in CSV file outputs, see CSVFileDelimiter property in gems.props.</li>
+</ul>
+
+<p><strong>Version 3.3</strong></p>
+<ul>
+<li>New monitor connections dialog available in Server menu</li>
+<li>New monitor routes dialog available in Routes menu</li>
+<li>Add option in message destroyer dialog to use Admin API or JMS read operation</li>
+<li>Add support for SubStation IMS statistics, and improve multi-interface display</li>
+<li>Add LogDateTimeFormat property in gems.props</li>
+<li>Ignore temporary destinations in destination picker for improved performance</li>
+<li>Support for message property values containing ':' in message dialog save/load operations</li>
+</ul>
+
+<p><strong>Version 3.2</strong></p>
+<ul>
+  <li>Support for new EMS6.0 features:<ul>
+      <li>MStore Info display</li>
+                <li>Fragmentation level on File Store display</li>
+                <li>Server Info properties: MaxClientMsgSize, DestinationBacklogSwapQueue Info property: RedeliveryDelay</li>
+            </ul>
+        </li>
+        <li>New Look &amp; Feel (customisable in gems.props)</li>
+        <li>Manage Bridges Dialog</li>
+        <li>Server info logging (see servers.xml)</li></li>
+        <li>MapMessages support</li>
+    <li>Configure Server Trace Dialog</li>
+    <li>Save messages to file from Browser/Subscriber File menu</li>
+    <li>Set Request/Reply timeout in Request/Reply Monitor Edit 
+        Menu Options Dialog</li>
+    <li>Filtering of TextMessages in Queue Browser via Edit Menu</li>
+    <li>Column size customisation for details panel available with 
+        DetailPanelColWidths property</li>
+    <li>Improved SubStation support for V2.5 (see servers.xml for 
+        details)</li>
+</ul>
+
+<p><strong>Version 3.1</strong></p>
+<ul>
+  <li>Charting of server info</li>
+        <li>JMS Request/reply monitoring (Queue/Topic menu)</li>
+        <li>Server Event monitoring (see servers.xml)</li>
+        <li>Management and monitoring support for TIBCO SubStation (see servers.xml)</li>
+        <li>Configurable tree view (see hide views option in gems.props)</li>
+        <li>Totals displayed in server monitor, view via right mouse button menu</li>
+        <li>Create/Destroy Connection Factories menu entries</li>
+        <li>Improved support for FT connections (see servers.xml)</li>
+        <li>Administration changes to backup servers are now disabled by default (see 
+            gems.props)</li>
+</ul>
+<p><strong>Version 3.0</strong></p>
+<ul>
+  <li>Support for EMS5.0:<ul>
+      <li>Channels Info panel</li>
+      <li>Stores(File), Stores(DB) Info panel</li>
+      <li>Server Info: isMulticastEnabled, MulticastStatisticsInterval, StoresFile, 
+          ChannelsFile</li>
+      <li>Queue Info: Store, isStoreInherited</li>
+      <li>Topic Info: Store, isStoreInherited, Channel, isChannelInherited, 
+          isMulticastEnabled</li>
+      <li>Connection Info: UncommittedCount, UncommittedSize</li>
+      <li>Consumer Info: Multicast</li>
+      <li>Route Info: BacklogCount, BacklogSize</li>
+      </ul>
+    </li>
+  <li>Copy selected messages in Queue Browser window to another destination/server</li>
+    <li>Destroy selected messages in Queue Browser window</li>
+    <li>Purge multiple queues/topics</li>
+    <li>Service (request/reply) statistics collection (see servers.xml)</li>
+    <li>View Text messages as XML via right mouse click popup menu</li>
+    <li>View Bytes messages as text via right mouse click popup menu</li>
+    <li>Custom column widths are maintained between displays</li>
+    <li>Save tabular data to CSV file via right mView original message from $sys.monitor messages</li>
+    <li>New configurable properties (see gems.props):<ul>
+        <li>MaxDisplayBytes - Maximum display size for bytes messages</li>
+            </ul>
+        </li>
+        <li>Compiled with JDK 1.5 and no longer compatible with JVM 1.4. </li>
+</ul>
+    <p><strong>Version 2.4</strong></p>
+<ul>
+    <li>Support for new EMS4.4 properties:<ul>
+        <li>PendingMsgCount, PendingMsgSize and selector on consumer properties</li>
+                <li>Prefetch, MaxMsgs and OverflowPolicy on topic properties</li>
+                <li>isRouted and getRouteName queue properties</li>
+            </ul>
+        </li>
+  <li>SSL connectivity (see servers.xml)</li>
+        <li>Cut and Paste on edit menu and right mouse click popup menu</li>
+        <li>Selector wizard for queue browsing by message timestamp</li>
+        <li>Options editor in Queue Browser, Durable Browser and Topic Subscriber</li>
+        <li>Column sorting on Server Info and Message Browser panels</li>
+        <li>Route Management and highlighting for disconnected routes.</li>
+        <li>Routing info added to Queues Info display</li>
+        <li>PermType setting in gems.props to show destinations by permanence type (default; 
+            no temps)</li>
+        <li>Tree icons and custom icons configurable in servers.xml</li>
+</ul>
+    <p><strong>Version 2.3</strong></p>
+<ul>
+    <li>Support for new EMS4.3 properties</li>
+    <li>Destination and Administration permissions management</li>
+    <li>Bridge management</li>
+    <li>Queue and Topic Monitor</li>
+    <li>View only mode</li>
+    <li>Improved bridge and route details</li>
+    <li>AutoConnect attribute in servers.xml</li>
+    <li>Customisable tree view in servers.xml e.g. to group servers in regions or by 
+        environment</li>
+    <li>Pending message sizes highlighted in red when reaches 80% of MaxBytes or MaxMsgs 
+        limit</li>
+</ul>
+<p><strong>Version 2.2</strong></p>
+<ul>
+  <li>Storage Info display tab</li>
+        <li>Set server properties dialog</li>
+    Set destination properties dialog</li>
+</ul>
+<p><strong>Version 2.1</strong></p>
+<ul>
+    <li>Main Server Monitor display with configurable limit minding and colour 
+        highlighting</li>
+    <li>User management; create, update, destroy user</li>
+    <li>Durable management; create, destroy, purge, browse pending messages</li>
+    <li>Automatic display refresh</li>
+    <li>Column sorting on display panel</li>
+    <li>Save/load text messages to/from file</li>
+    <li>Loads server connection details and limits from servers.xml file</li>
+    <li>Display properties configuration file (gems.props)</li>
+    <li>Destroy a client's EMS connection</li>
+</ul>
+<p><strong>Version 1.0</strong></p>
+<ul>
+    <li>Multiple EMS server connections</li>
+    <li>Displays configuration and statistics for topics, queues, ACLs, routes, 
+        connections, durables, groups, producers, transactions, transports, users.</li>
+    <li>Queue management; create, destroy, purge, browse messages, send text messages</li>
+    <li>Topic management; create, destroy, purge, subscribe to messages, publish text 
+        messages </li>
+</ul>
+<hr>
+</body>
+</html>

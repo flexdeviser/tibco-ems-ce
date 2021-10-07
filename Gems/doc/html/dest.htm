@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Managing Queues and Topics</title>
+  </head>
+
+  <body>
+  <h2> Managing Queues and Topics</h2>
+    <h3><a name="monitor"/>Monitoring Destinations</h3>
+
+    <p>To view a list of queues or topics select "Queues" or "Topics" on the tree view on the left hand side of the main display. The list may be sorted by clicking on the appropriate column header. For example to list queues by message queue depth click on the "PendingMsgCount" column header, or to see which queues are currently most heavily in use click on "InMsgRate".</p>
+
+    <p>A separate queues or topics display window may be opened using the "Show Queues..." or "Show Topics..." menu entries. With this display a pattern may be specified to filter the destination list. This is very useful when there are too many destinations to efficiently be displayed easily. It is also possible to view temporary destinations using the View menu.</p>
+
+    <p>All destination displays will automatically refresh once very refresh period as configured in the gems.props file. Automatic refresh can be turned off for a display with the AutoRefresh option in the View menu.</p>
+
+    <p>To view a complete list of property settings for a destination, double-click on the queue or topic or select "Queue/Topic Properties..." on the right mouse button pop-up menu.</p>
+
+    <p>From EMS 8.4 it's possible to set a large destination limit (see LargeDestCount/Memory on the ServerInfo panel), when the PendingMessageCount/Size reaches these limits for any destination these fields are highlighted in red.</p>
+
+    <p><b>Note; continually displaying 1000's of queues or topics can be slow and can cause a performance impact on the EMS server so the main queues or topics display will be disabled if there are more than 1000 destinations. If this is the case you may view destinations using the "Show Queues..." or "Show Topics..." menu entries and specifying a filter pattern, or by reducing the list for the main display by configuring a QueueNamePattern or TopicNamePattern in the gems.props file.</b></p>
+
+
+    <h3><a name="browse"/>Browsing Queues</h3>
+    <p>To browse a queue's messages select "Queue Browser..." from the Queues menu. If a queue was selected the queue name will automatically be shown, if not type in the name of the queue to browse or use the "..." button to display the destination picker. Set the number of messages to browse.</p>
+    <p>To browse just a certain set of messages a JMS selector may be specified, see the EMS User's Guide on information on specifying selectors. To browse messages based on time use the "..." button to open an editor which can be used to configure a selector to browse messages sent before or after a certain time. By default the editor will configure a selector to browse messages received in the last 10 minutes. For TextMessage types it is possible to filter messages based on message content, use the "TextMessage Filter..." option in the Edit menu to set a regular expression, for example <code>.*[Ee]rror.*</code> will match all messages with a text body that contains "Error" or "error".</p>
+    <p>To begin browsing click the Start button, the display will show one line for each message browsed. The display shows the following information for each message:</p>
+    <ul>
+      <li>MessageID - the unique JMSMessageID for this message.</li>
+      <li>Timestamp - the date and time the message was sent.</li>
+      <li>Type - the JMS message type e.g. Text, Map, Bytes, Stream, or Object.</li>
+      <li>MsgSize - the message size, if the message is compressed this is the compressed size.</li>
+      <li>Destination - the destination queue name.</li>
+      <li>CorrelationID - the JMSCorrelationID e.g. an identifier to link messages, such as a response message to a request message.</li>
+      <li>DeliveryMode - the delivery mode e.g. PERSISTENT, NON_PERSISTENT or RELIABLE</li>
+    </ul>
+
+    <p>To display further information about the message the message display can be opened by double-clicking on a message or using the right mouse button pop-up menu.</p>
+    <p>The following options may be set using the options editor on the Edit menu:</p>
+    <ul>
+      <li>Message read delay - the delay between browsing messages in millisecs.</li>
+      <li>View oldest messages first - determines the order of messages displayed in the list.</li>
+    </ul>
+    <p>To save browsed messages to a file use the "Save Messages to File..." option in the File menu.</p>
+
+    <p><b>Note; messages that have been sent to a client application and not yet acknowledged, or messages that have been sent to the EMS client library and held in a prefetch queue CANNOT be browsed. If this condition persists its possible that the client application has stalled and may need to be shutdown.</b></p>
+
+    <h3><a name="subscr"/>Subscribing to Topics</h3>
+    <p>To view messages that are published to a topic select "Topic Subscriber..." from the Topics menu. If a topic was selected the topic name will automatically be shown, if not type in the name of the topic to subscribe to or use the "..." button to display the destination picker. Set the number of messages to receive.</p>
+    <p>To receive just a certain set of messages a JMS selector may be specified, see the EMS User's Guide on information on specifying selectors.</p>
+    <p>To begin subscribing click the Start button, the display will show one line for each message received. The display shows the following information for each message:</p>
+    <ul>
+      <li>MessageID - the unique JMSMessageID for this message.</li>
+      <li>Timestamp - the date and time the message was sent.</li>
+      <li>Type - the JMS message type e.g. Text, Map, Bytes, Stream, or Object.</li>
+      <li>MsgSize - the message size, if the message is compressed this is the compressed size.</li>
+      <li>Destination - the destination queue name.</li>
+      <li>CorrelationID - the JMSCorrelationID e.g. an identifier to link messages, such as a response message to a request message.</li>
+      <li>DeliveryMode - the delivery mode e.g. PERSISTENT, NON_PERSISTENT or RELIABLE</li>
+    </ul>
+
+    <p>To display further information about the message the message display can be opened by double-clicking on a message or using the right mouse button pop-up menu.</p>
+    <p>The following options may be set using the options editor on the Edit menu:</p>
+    <ul>
+      <li>Message read delay - the delay between receiving messages in millisecs.</li>
+      <li>View oldest messages first - determines the order of messages displayed in the list.</li>
+    </ul>
+    <p>Note; all received messages can be saved to a file using the "Save Messages to File..." option in the File menu.</p>
+
+    <h3><a name="monmsg"/>Monitoring (Snooping) Server Messages</h3>
+    <p>You can monitor (or snoop) messages as they pass through the EMS server. To monitor queue messages select "Queue Monitor..." from the Queues menu, to monitor topic messages select "Topic Monitor..." from the Topics menu.</p>
+    <p>The monitor display uses $sys.monitor topics to receive monitor event messages as JMS messages are received by the EMS server and delivered to a client application. If a destination was selected the topic or queue being monitored will automatically be shown, if not use the "..." button to display the destination picker. Set the number of monitor events to receive. You may also optionally select for the original JMS message to be included in the monitor event (Note; use this option with caution particularly if messages could be large).</p>
+    <p>To receive just a certain set of monitor events a selector may be specified via the Edit menu, see the EMS User's Guide on information on specifying selectors. Note; the selector applies to the $sys.monitor event message not the original JMS message, see EMS User's Guide for description of $sys.monitor message properties.</p>
+    <p>To begin monitoring click the Start button, the display will show one line for each monitor event received. For each queue message being snooped up to three monitor events will be displayed; one for JMS message being received from a producer, one for the JMS message being sent to a consumer, and one for the sent JMS message being acknowledged. For topic messages, sent and acknowledge monitor messages will be received for each subscriber. The display shows the following information for each monitor event:</p>
+    <ul>
+      <li>MonitorEventID - identifier for the monitor event.</li>
+      <li>EventTimestamp - the date and time the monitor event.</li>
+      <li>JMSMessageID - identifier for the JMS message being monitored.</li>
+      <li>MsgTimestamp - the timestamp of the JMS message.</li>
+      <li>EventAction - the action that caused the event e.g. receive, send, acknowledge.</li>
+      <li>Latency - the time (in millisecs) between monitor events for this JMS message. I.e. for a send event the time taken between receiving the JMS message from a producer and it being sent to the consumer. For an acknowledge event the time taken between receiving the JMS message from a producer and it being acknowledged by the consumer.</li>
+      <li>EventReason - the reason the event occurred e.g. producer, consumer.</li>
+      <li>ConnHostname - the hostname of the client connection that generated the event.</li>
+      <li>ConnUsername - the user name of the client connection that generated the event.</li>
+      <li>TargetDestination - the name of the target destination being snooped.</li>
+      <li>JMSMessageSize - the size of the original JMS message, if the message is compressed this is the compressed size. Note; only available if "Include JMS Messages" is checked.</li>
+    </ul>
+
+    <p>To display further information about the monitor event open the message display by double-clicking on a monitor event or using the right mouse button pop-up menu. To view the original JMS message use the "Open Original JMS Message..." option in Message menu or right mouse button pop-ip menu.</p>
+    <p>The following options may be set using the options editor on the Edit menu:</p>
+    <ul>
+      <li>Message read delay - the delay between receiving monitor event messages in millisecs.</li>
+      <li>View oldest messages first - determines the order of monitor event messages displayed in the list.</li>
+    </ul>
+    <p>All received events can be saved to a file using the "Save Monitor Events to File..." option in the File menu.</p>
+
+    <p><b style="color:red;">Note; monitoring destinations under high load can cause message backlogs in the EMS server, the monitor will automatically stop if the message backlog exceeds the configuration property MaxMonitorBacklog (default 1000). MaxMonitorBacklog may be set in the gems.props file.</b></p>
+
+
+    <h3><a name="purgemsg"/>Purging Server Messages</h3>
+    <p>Sometimes it's necessary to purge unwanted messages from the EMS server. To purge all messages on a destination, select the desired queue or topic then select a purge option from the Queues or Topics menu.</p>
+    <p><b style="color:red;">Note; once purged, messages on the server will be destroyed and cannot be recovered.</b></p>
+    <p>It may also sometimes be necessary to purge or destroy a specific message or messages on a queue. To do this first browse the queue then select the messages to be destroyed then select "Destroy Checked Messages..." from the Message menu. A new window will open where you can select whether to destroy the message using the Admin API or to read the message with a selector using the JMS API. To use the Admin API first track_message_ids must be enabled on the EMS server.</p>
+    <h3><a name="copymsg"/>Copying Messages to Another Destination or Server</h3>
+    <p>It is also possible to copy messages from a queue to another destination or even to another EMS server. To copy a selected set of mesages first browse the queue then select the messages to be copied then select "Copy Checked Messages..." from the Message menu. A new window will open where you can select which EMS server and which destination to copy the messages to. Note; the messages will be sent to the specified destination all in one transaction, so if any message fails the transaction will be rolled back and no messages copied.</p>
+  <p>To copy all messages on a queue to another destination select "Copy All Messages..." from the Queues menu.</p>
+  <hr>
+  </body>
+</html>

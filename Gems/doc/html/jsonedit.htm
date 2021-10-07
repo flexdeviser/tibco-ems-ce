@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <title>Using the Server JSON Configuration Editor</title>
+  </head>
+
+  <body>
+    <h2><a name="jsonedit"/>Using the Server JSON Configuration Editor</h2>
+
+
+<p>Gems supports EMS servers that use a single JSON style configuration file. To edit a server's JSON configuration select "Edit Server JSON Config..." from the Server menu.</p>
+
+<p>The JSON Editor supports the following features:</p>
+<ul>
+    <li>The server's complete JSON configuation maybe viewed and saved to file</li>
+    <li>Import of configuration details from running EMS servers to JSON format</li>
+    <li>Import of configuration details from JSON file</li>
+    <li>Creation of new data stores</li>
+    <li>Creation of new connection factories</li>
+    <li>Creation of additional listen ports</li>
+    <li>Setting of server properties</li>
+    <li>Validation and detection of duplicate entries</li>
+    <li>Server update of JSON configuration changes</li>
+</ul>
+
+
+<p>
+For some configuration changes, it is necessary for the server to be restarted for the applied changes to take effect. After applying the updates the response will indicate if a server restart is required.
+</p>
+<p>If the server responds with the error below, this means the server's configuration has been updated by someone else after the editor was opened. Close and reopen the editor to ensure any external changes are not lost. If you want to force the update choose Force Update Server option from the Actions menu, but be warned ANY OTHER CHANGES MADE SINCE OPENING THE EDITOR WILL BE LOST.
+</p>
+
+       	<p><img src="../images/err.jpg" alt="Update Error" /><br>
+
+<p><b style="color:red">The JSON Editor is for advanced use only, always save a copy of the JSON configuration to file before making changes.<br>Consult EMS server log for error information if server update fails.</b></p>
+
+
+  <h3><a name="migjson"/>Migrating to JSON based EMS Servers</h3>
+
+<p>The "Server JSON Editor" may be used to migrate existing configuration from a running EMS server to JSON format and saved to file, or applied directly to a JSON based EMS Server.</p>
+
+
+<p>When moving to JSON based EMS server configuration, much of the existing configuration details will need to be migrated. The configuration types that will typically need to be migrated are:</p>
+<ul>
+    <li>Destinations (queues and topics)</li>
+    <li>Custom messages stores</li>
+    <li>Durables</li>
+    <li>Bridges</li>
+    <li>Users and Groups</li>
+    <li>ACLs</li>
+    <li>Connection Factories</li>
+    <li>Routes</li>
+</ul>
+
+<p>You may import JSON configuration entities, such as queues, topics, durables etc. from other EMS servers using the Import menu option. You may also combine configuration entities from several EMS servers using the import's merge option. Note; merge does not detect duplicates, to check for duplicate use the Validate option and if any duplicate entries are found use the Find option on the JSON Editor's Edit menu to search for the duplicate and remove the entry thats not required.</p>
+
+<p><b>Note; importing users does not import passwords. Passwords can be set manually after import, or if you have many users with passwords to migrate, first convert the server's .conf files to a single JSON file using the EMS tool tibemsconf2json, then use the editor's "Import from JSON File..." option to import all users. The same procedure can be used to import other configuration entities not available on the Import menu.</p> 
+
+  <hr>
+  </body>
+</html>
